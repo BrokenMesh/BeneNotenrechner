@@ -1,4 +1,4 @@
-using BeneNotenrechner;
+using BeneNotenrechner.Backend;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +27,6 @@ app.MapFallbackToFile("index.html");
 ;
 
 // DB
-DBManager db = new DBManager("localhost", "Hicham", "Hallosaid1", "demo-db");
+DBManager db = new DBManager("localhost", "Hicham", "Hallosaid1", "benenotenrechner_db");
 
 app.Run();

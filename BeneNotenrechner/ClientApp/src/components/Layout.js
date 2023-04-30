@@ -7,7 +7,7 @@ export class Layout extends Component {
 
   render() {
     return (
-      <div>
+        <div class=".container" data-bs-theme="dark">
           <Container>
             <StateProvider>
               {this.props.children}

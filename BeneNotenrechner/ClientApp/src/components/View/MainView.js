@@ -13,7 +13,11 @@ export class MainView extends Component {
         return (
             <div>
                 <h1>This is the Main Page</h1>
-
+                <MContext.Consumer>
+                    {(context) => (
+                        <p>{context.state.token}</p>
+                    )}
+                </MContext.Consumer>
             </div>
         );
     }

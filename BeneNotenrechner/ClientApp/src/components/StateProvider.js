@@ -3,18 +3,18 @@
 export const MContext = React.createContext(); 
 
 export class StateProvider extends Component {
-    state = { message: "", count: 1, isAuthenticated: false }
+    state = { token: "", isAuthenticated: false }
 
     render() {
         return (
             <MContext.Provider value={
                 {
                     state: this.state,
-                    setMessage: (value) => this.setState({
-                        message: value
+                    setToken: (value) => this.setState({
+                        token: value
                     }),
-                    setCount: (value) => this.setState({
-                        count: value
+                    setAuthenticatedState: (value) => this.setState({
+                        isAuthenticated: value
                     })
                 }}>
                 {this.props.children}

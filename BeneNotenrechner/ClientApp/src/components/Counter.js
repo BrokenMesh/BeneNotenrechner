@@ -1,18 +1,11 @@
 import React, { Component } from 'react';
+import { MContext } from './StateProvider';
 
 export class Counter extends Component {
   static displayName = Counter.name;
 
   constructor(props) {
     super(props);
-    this.state = { currentCount: 0 };
-    this.incrementCounter = this.incrementCounter.bind(this);
-  }
-
-  incrementCounter() {
-    this.setState({
-      currentCount: this.state.currentCount + 1
-    });
   }
 
   render() {
@@ -22,9 +15,14 @@ export class Counter extends Component {
 
         <p>This is a simple example of a React component.</p>
 
-        <p aria-live="polite">Current count: <strong>{this.state.currentCount}</strong></p>
-
-        <button className="btn btn-primary" onClick={this.incrementCounter}>Increment</button>
+        <MContext.Consumer>
+            {(context) => (
+                <div>
+                    <p aria-live="polite">Current count: <strong>{context.state.count}</strong></p>
+                        <button className="btn btn-primary" onClick={() => { context.setCount(context.state.count +1) }}>Increment</button>
+                </div>
+            )}
+            </MContext.Consumer>
       </div>
     );
   }

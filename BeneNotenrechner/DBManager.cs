@@ -20,7 +20,7 @@ namespace BeneNotenrechner {
         }
 
         public string GetData() {
-            string sql = $"SELECT date, customerID FROM bill WHERE idBill={counter}";
+            string sql = $"SELECT name, money FROM users WHERE idusers={counter}";
             MySqlCommand command = new MySqlCommand(sql, db);
             MySqlDataReader reader = command.ExecuteReader();
 

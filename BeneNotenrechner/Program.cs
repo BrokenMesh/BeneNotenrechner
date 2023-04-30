@@ -27,6 +27,6 @@ app.MapFallbackToFile("index.html");
 ;
 
 // DB
-DBManager db = new DBManager("localhost", "Hicham", "Hallosaid1", "erp_db");
+DBManager db = new DBManager("localhost", "Hicham", "Hallosaid1", "demo-db");
 
 app.Run();

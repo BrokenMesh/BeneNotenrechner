@@ -1,4 +1,5 @@
 ﻿import React, { Component } from 'react';
+import { MContext } from './StateProvider';
 
 export class Demo extends Component {
     static displayName = Demo.name;
@@ -6,14 +7,6 @@ export class Demo extends Component {
     constructor(props) {
         super(props);
         this.state = { currentText: 'FUCKKKK' };
-        this.incrementCounter = this.incrementCounter.bind(this);
-    }
-
-    incrementCounter(evt) {
-        const val = evt.target.value;
-        this.setState({
-            currentText: val
-        });
     }
 
     render() {
@@ -22,11 +15,16 @@ export class Demo extends Component {
                 <h1>Demo</h1>
 
                 <p>Im trying my best</p>
+                <MContext.Consumer>
+                {(context) => (
+                    <div>
+                        <p aria-live="polite">Current Text: <strong>{context.state.message}</strong></p>
+                        <input type="input" class="form-control" onChange={(evt) => { context.setMessage(evt.target.value) }} value={context.state.message} ></input>
+                    </div>
+                )}
+                </MContext.Consumer>
 
-                <p aria-live="polite">Current Text: <strong>{this.state.currentText}</strong></p>
-
-                <input type="input" class="form-control" onChange={evt => this.incrementCounter(evt)} value={this.state.currentText}/>
-            </div>
+            </div> 
         );
     }
 }

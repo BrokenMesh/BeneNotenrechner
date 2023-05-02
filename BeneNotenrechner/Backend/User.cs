@@ -4,12 +4,17 @@
     {
         public int Id { get; private set; } 
         public string Username { get; private set; }
-        public uint Token { get; private set; }
+        public DateTime LastAuthentication { get; private set; }
 
-        public User(int id, string username, uint token) {
+        public User(int id, string username) {
             Id = id;
             Username = username;
-            Token = token;
+
+            SetAutenticationToNow();
+        }
+
+        public void SetAutenticationToNow() {
+            LastAuthentication = DateTime.Now;
         }
     }
 }

@@ -1,32 +1,41 @@
 using BeneNotenrechner.Backend;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace BeneNotenrechner {
+    public class Program {
 
-// Add services to the container.
+        public static void Main(string[] args) {
+            var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews();
+            // Add services to the container.
 
-var app = builder.Build();
+            builder.Services.AddControllersWithViews();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment()) {
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment()) {
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseRouting();
+
+
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller}/{action=Index}/{id?}");
+
+            app.MapFallbackToFile("index.html");
+            ;
+
+            // DB
+            DBManager db = new DBManager("localhost", "Hicham", "Hallosaid1", "benenotenrechner_db");
+            UserManager.Start();
+
+            app.Run();
+        }
+
+    }
 }
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseRouting();
-
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
-
-app.MapFallbackToFile("index.html");
-;
-
-// DB
-DBManager db = new DBManager("localhost", "Hicham", "Hallosaid1", "benenotenrechner_db");
-
-app.Run();

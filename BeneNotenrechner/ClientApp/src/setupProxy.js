@@ -8,6 +8,7 @@ const context =  [
   "/weatherforecast",
   "/demodata",
   "/logincall",
+  "/reauthenticate"
 ];
 
 module.exports = function(app) {

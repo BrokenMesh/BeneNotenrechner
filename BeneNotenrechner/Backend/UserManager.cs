@@ -2,8 +2,16 @@
 {
     public class UserManager
     {
-        private static List<User> userlist = new List<User>();
+        private static Dictionary<uint, User> userlist = new Dictionary<uint, User>();
         private static Random random = new Random();
+
+        private static Timer timer;
+
+        public static void Start() { 
+            timer = new Timer((object? state) => { 
+                CheckForOutdatedUsers(); 
+            }, null, 0, 1000*60*15);
+        }
 
         public static Tuple<string, string> LoginUser(string _username, string _password) {
             int _userid = DBManager.instance.GetUser(_username, _password);
@@ -15,11 +23,37 @@
                     return new Tuple<string, string>("", "Error: could not create new user");
             }
 
-            uint token = (uint)random.Next(1_000_000_000, int.MaxValue);
+            uint _token = (uint)random.Next(1_000_000_000, int.MaxValue);
 
-            userlist.Add(new User(_userid, _username, token));
+            userlist.Add(_token, new User(_userid, _username));
 
-            return new Tuple<string, string>(token.ToString(), "");
+            Console.Write("> ");
+            foreach (uint _userId in userlist.Keys) 
+                Console.Write($"{userlist[_userId].Username}, ");
+            Console.WriteLine();
+
+            return new Tuple<string, string>(_token.ToString(), "");
+        }
+
+        private static void CheckForOutdatedUsers() {
+            List<uint> _usersToDelete = new List<uint>();
+
+            foreach (uint _userId in userlist.Keys) {
+                if (userlist[_userId].LastAuthentication.AddMinutes(15f) < DateTime.Now) {
+                    _usersToDelete.Add(_userId);
+                }
+            }
+
+            foreach (uint _userId in _usersToDelete) {
+                Console.WriteLine($"Removed {userlist[_userId].Username} from Users list");
+                userlist.Remove(_userId);
+            }
+        }
+
+        public static void ReauthenticateUser(uint _token) {
+            if(userlist.ContainsKey(_token)) {
+                userlist[_token].SetAutenticationToNow();
+            }
         }
     }
 }

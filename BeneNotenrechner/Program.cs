@@ -3,6 +3,7 @@ using BeneNotenrechner.Backend;
 namespace BeneNotenrechner {
     public class Program {
 
+        // TODO: Dont alow easy creation of new accounts either add question prompt or registration menu
         public static void Main(string[] args) {
             var builder = WebApplication.CreateBuilder(args);
 

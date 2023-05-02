@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "provider": "cdnjs",
+      "library": "js-sha256@0.9.0",
+      "destination": "lib/js-sha256/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "js-sha256@0.9.0",
+      "destination": "lib/js-sha256/"
+    }
+  ]
+}

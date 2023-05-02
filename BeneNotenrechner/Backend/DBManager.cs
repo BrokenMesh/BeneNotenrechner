@@ -29,15 +29,33 @@ namespace BeneNotenrechner.Backend
 
             _command.ExecuteNonQuery();
 
-            return GetUser(_username, _password);
+            return GetUser(_username);
         }
 
-        public int GetUser(string _username, string _password) {
-            string _sql = "SELECT user_id FROM users WHERE username = @username AND password = @password";
+        public bool CheckPassword(int _userId, string _submitePassword) {
+            string _sql = "SELECT users.password FROM users WHERE user_id = @userid";
+
+            MySqlCommand _command = new MySqlCommand(_sql, db);
+            _command.Parameters.AddWithValue("@userid", _userId);
+
+            MySqlDataReader _reader = _command.ExecuteReader();
+
+            string? _userPassword = null;
+
+            while (_reader.Read()) {
+                _userPassword = _reader.GetString("password");
+            }
+
+            _reader.Close();
+
+            return _userPassword == _submitePassword;
+        }
+
+        public int GetUser(string _username) {
+            string _sql = "SELECT user_id FROM users WHERE username = @username";
             MySqlCommand _command = new MySqlCommand(_sql, db);
 
             _command.Parameters.AddWithValue("@username", _username);
-            _command.Parameters.AddWithValue("@password", _password);
 
             MySqlDataReader _reader = _command.ExecuteReader();
 

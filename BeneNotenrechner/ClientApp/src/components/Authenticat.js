@@ -37,7 +37,7 @@ export class Authenticat extends Component {
                 <MContext.Consumer>
                     {(context) => {
 
-                        setInterval(() => { this.Reauthenticate(context) }, 600_000);
+                        setInterval(() => { this.Reauthenticate(context) }, 1000*60*5);
 
                         if (context.state.isAuthenticated) {
                             return page;

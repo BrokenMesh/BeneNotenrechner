@@ -1,5 +1,6 @@
 ﻿import React, { Component } from 'react';
 import { MContext } from '../StateProvider';
+import { sha256 } from 'js-sha256'
 
 export class LoginView extends Component {
     static displayName = LoginView.name;
@@ -21,10 +22,15 @@ export class LoginView extends Component {
 
     handleSubmit(event, context) {
         const submitUserData = async () => {
+            const password_hash = sha256(this.state.password);
+
+
             const data = {
                 username: this.state.username,
-                password: this.state.password
-            }
+                password: password_hash
+            } 
+
+            console.log(data);
 
             const result = await fetch('logincall', {
                 method: 'POST',

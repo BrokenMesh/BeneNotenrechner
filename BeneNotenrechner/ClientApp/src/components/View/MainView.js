@@ -20,7 +20,7 @@ export class MainView extends Component {
                             <div className="card">
                                 <div className="card-body">
                                     <h5 className="card-title">NotenTool</h5>
-                                    <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                    <p className="card-text">Erlaubt das eintragen von Noten und des Berechnen vom Notenschnit für Fächer und Semester</p>
                                     <Link to="/NotenTool" className="btn btn-primary">Öffnen</Link>
                                 </div>
                             </div>
@@ -29,7 +29,7 @@ export class MainView extends Component {
                             <div className="card">
                                 <div className="card-body">
                                     <h5 className="card-title">AbsenzenTool</h5>
-                                    <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                    <p className="card-text">Elaubt das eintragen von den Absentzen und das Visualisiren der besuchten Schulzeit.</p>
                                     <Link to="/AbsenzenTool" className="btn btn-primary">Öffnen</Link>
                                 </div>
                             </div>

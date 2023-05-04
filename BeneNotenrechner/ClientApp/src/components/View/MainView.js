@@ -20,7 +20,7 @@ export class MainView extends Component {
                             <div className="card">
                                 <div className="card-body">
                                     <h5 className="card-title">NotenTool</h5>
-                                    <p className="card-text">Erlaubt das eintragen von Noten und des Berechnen vom Notenschnit für Fächer und Semester</p>
+                                    <p className="card-text">Erlaubt das eintragen von Noten und des Berechnen vom Notenschnit.</p>
                                     <Link to="/NotenTool" className="btn btn-primary">Öffnen</Link>
                                 </div>
                             </div>

@@ -18,6 +18,8 @@ namespace BeneNotenrechner.Backend
             Console.WriteLine($"MySql version: {db.ServerVersion}");
         }
 
+        #region USER
+
         public int CreateUser(string _username, string _password) {
             OpenStream();
 
@@ -75,6 +77,8 @@ namespace BeneNotenrechner.Backend
             return _user_id;
         }
 
+        #endregion USER
+
         #region PROFILE_GETTERS
         public Profile? GetProfile(int _id_user, bool _resolveChildren) {
             OpenStream();
@@ -95,14 +99,14 @@ namespace BeneNotenrechner.Backend
             Profile _profile = new Profile(_id_profile, _id_user);
 
             if (_resolveChildren) {
-                _profile.superSubjects = GetSuperSubjects(_profile, true);
+                _profile.superSubjects = GetSuperSubjectAll(_profile, true);
             }
 
             CloseStream();
             return _profile;
         }
 
-        public List<SuperSubject> GetSuperSubjects(Profile _profile, bool _resolveChildren) {
+        public List<SuperSubject> GetSuperSubjectAll(Profile _profile, bool _resolveChildren) {
             OpenStream();
 
             List<SuperSubject> _superSubjects = new List<SuperSubject>();
@@ -126,7 +130,7 @@ namespace BeneNotenrechner.Backend
 
             if (_resolveChildren) {
                 foreach (SuperSubject _superSubject in _superSubjects) {
-                    _superSubject.subjects = GetSubjects(_superSubject, true);
+                    _superSubject.subjects = GetSubjectAll(_superSubject, true);
                 }
             }
 
@@ -134,7 +138,7 @@ namespace BeneNotenrechner.Backend
             return _superSubjects;
         }
 
-        public List<Subject> GetSubjects(SuperSubject _superSubject, bool _resolveChildren) {
+        public List<Subject> GetSubjectAll(SuperSubject _superSubject, bool _resolveChildren) {
             OpenStream();
 
             List<Subject> _subjects = new List<Subject>();
@@ -157,7 +161,7 @@ namespace BeneNotenrechner.Backend
 
             if (_resolveChildren) {
                 foreach (Subject _subject in _subjects) {
-                    _subject.grades = GetGrades(_subject);
+                    _subject.grades = GetGradeAll(_subject);
                 }
             }
 
@@ -165,7 +169,7 @@ namespace BeneNotenrechner.Backend
             return _subjects;
         }
 
-        public List<Grade> GetGrades(Subject _subject) {
+        public List<Grade> GetGradeAll(Subject _subject) {
             OpenStream();
 
             List<Grade> _grades = new List<Grade>();
@@ -191,9 +195,65 @@ namespace BeneNotenrechner.Backend
             return _grades;
         }
 
+
+
         #endregion PROFILE_GETTERS
 
         #region PROFILE_CREATION
+        public Profile? CreateProfile(int _user_id) {
+            OpenStream();
+
+            string _sql = "INSERT INTO `benenotenrechner_db`.`tbl_profile` (`id_users`) VALUES (@id_users);";
+            using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
+                _command.Parameters.AddWithValue("@id_users", _user_id);
+                _command.ExecuteNonQuery();
+            }
+
+            CloseStream();
+            return GetProfile(_user_id, false);
+        }
+
+        public void CreateSuperSubject(Profile _profile, string _name, int _semester) {
+            OpenStream();
+
+            string _sql = "INSERT INTO `benenotenrechner_db`.`tbl_supersubject` (`name`, `semester`, `id_profile`) VALUES (@name, @semester, @id_profile); ";
+            using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
+                _command.Parameters.AddWithValue("@name", _name);
+                _command.Parameters.AddWithValue("@semester", _semester);
+                _command.Parameters.AddWithValue("@id_profile", _profile.id_profile);
+                _command.ExecuteNonQuery();
+            }
+
+            CloseStream();
+        }
+
+        public void CreateSubject(SuperSubject _superSubject, string _name) {
+            OpenStream();
+
+            string _sql = "INSERT INTO `benenotenrechner_db`.`tbl_subject` (`name`, `id_supersubject`) VALUES (@name, @id_supersubject); ";
+            using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
+                _command.Parameters.AddWithValue("@name", _name);
+                _command.Parameters.AddWithValue("@id_supersubject", _superSubject.id_supersubject);
+                _command.ExecuteNonQuery();
+            }
+
+            CloseStream();
+        }
+
+        public void CreateGrade(Subject _subject, float _grade, DateTime _date) {
+            OpenStream();
+
+            string _sql = "INSERT INTO `benenotenrechner_db`.`tbl_grade` (`grade`, `date`, `id_subject`) VALUES ( @grade, @date, @id_subject); ";
+            using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
+                _command.Parameters.AddWithValue("@grade", _grade);
+                _command.Parameters.AddWithValue("@date", _date);
+                _command.Parameters.AddWithValue("@id_supersubject", _subject.id_subject);
+                _command.ExecuteNonQuery();
+            }
+
+            CloseStream();
+        }
+
         #endregion PROFILE_CREATION
 
         #region PROFILE_UPDATE

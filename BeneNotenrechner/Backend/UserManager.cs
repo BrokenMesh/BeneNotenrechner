@@ -64,5 +64,13 @@
                 userlist[_token].SetAutenticationToNow();
             }
         }
+
+        public static int GetUserIdFromToken(uint _token) {
+            if (userlist.ContainsKey(_token)) {
+                return userlist[_token].Id;
+            }
+
+            return -1;
+        }
     }
 }

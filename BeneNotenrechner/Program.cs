@@ -63,8 +63,6 @@ namespace BeneNotenrechner {
 
             }
             // ----*/
-
-
             
             app.Run();
         }

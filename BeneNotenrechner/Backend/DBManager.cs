@@ -95,6 +95,7 @@ namespace BeneNotenrechner.Backend
                     }
                 }
             }
+            CloseStream();
 
             Profile _profile = new Profile(_id_profile, _id_user);
 
@@ -102,7 +103,6 @@ namespace BeneNotenrechner.Backend
                 _profile.superSubjects = GetSuperSubjectAll(_profile, true);
             }
 
-            CloseStream();
             return _profile;
         }
 
@@ -127,6 +127,7 @@ namespace BeneNotenrechner.Backend
                     }
                 }
             }
+            CloseStream();
 
             if (_resolveChildren) {
                 foreach (SuperSubject _superSubject in _superSubjects) {
@@ -134,7 +135,6 @@ namespace BeneNotenrechner.Backend
                 }
             }
 
-            CloseStream();
             return _superSubjects;
         }
 
@@ -158,6 +158,7 @@ namespace BeneNotenrechner.Backend
                     }
                 }
             }
+            CloseStream();
 
             if (_resolveChildren) {
                 foreach (Subject _subject in _subjects) {
@@ -165,7 +166,6 @@ namespace BeneNotenrechner.Backend
                 }
             }
 
-            CloseStream();
             return _subjects;
         }
 
@@ -176,7 +176,7 @@ namespace BeneNotenrechner.Backend
 
             int _id_subject = _subject.id_subject;
 
-            string _sql = "SELECT * FROM tbl_subject WHERE id_subject = @id_subject";
+            string _sql = "SELECT * FROM tbl_grade WHERE id_subject = @id_subject";
             using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
                 _command.Parameters.AddWithValue("@id_subject", _id_subject);
 
@@ -190,8 +190,8 @@ namespace BeneNotenrechner.Backend
                     }
                 }
             }
-
             CloseStream();
+
             return _grades;
         }
 

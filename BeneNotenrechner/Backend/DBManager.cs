@@ -247,7 +247,7 @@ namespace BeneNotenrechner.Backend
             using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
                 _command.Parameters.AddWithValue("@grade", _grade);
                 _command.Parameters.AddWithValue("@date", _date);
-                _command.Parameters.AddWithValue("@id_supersubject", _subject.id_subject);
+                _command.Parameters.AddWithValue("@id_subject", _subject.id_subject);
                 _command.ExecuteNonQuery();
             }
 

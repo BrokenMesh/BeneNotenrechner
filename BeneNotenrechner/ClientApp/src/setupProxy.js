@@ -9,6 +9,7 @@ const context =  [
     "/reauthenticate",
     "/nt/nt_supersubject",
     "/nt/nt_subject",
+    "/nt/nt_grade",
 ];
 
 module.exports = function(app) {

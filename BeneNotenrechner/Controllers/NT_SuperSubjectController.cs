@@ -25,7 +25,9 @@ namespace BeneNotenrechner.Controllers
 
             foreach (SuperSubject _superSubject in _superSubjects) {
                 _response.Add(new NetSuperSubjectResponse(
-                    _superSubject.id_supersubject.ToString(), _superSubject.name, _superSubject.semester.ToString()));
+                    _superSubject.id_supersubject.ToString(), 
+                    _superSubject.name, 
+                    _superSubject.semester.ToString()));
             }
 
             return Ok(JsonSerializer.Serialize(_response));

@@ -186,6 +186,7 @@ namespace BeneNotenrechner.Backend
                             _reader.GetInt32("grade_id"),
                             _reader.GetFloat("grade"),
                             _reader.GetDateTime("date"),
+                            _reader.GetString("name"),
                             _reader.GetInt32("id_subject")));
                     }
                 }
@@ -240,13 +241,14 @@ namespace BeneNotenrechner.Backend
             CloseStream();
         }
 
-        public void CreateGrade(Subject _subject, float _grade, DateTime _date) {
+        public void CreateGrade(Subject _subject, float _grade, DateTime _date, string _name) {
             OpenStream();
 
-            string _sql = "INSERT INTO `benenotenrechner_db`.`tbl_grade` (`grade`, `date`, `id_subject`) VALUES ( @grade, @date, @id_subject); ";
+            string _sql = "INSERT INTO `benenotenrechner_db`.`tbl_grade` (`grade`, `date`, `name`, `id_subject`) VALUES ( @grade, @date, @name, @id_subject); ";
             using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
                 _command.Parameters.AddWithValue("@grade", _grade);
                 _command.Parameters.AddWithValue("@date", _date);
+                _command.Parameters.AddWithValue("@name", _name);
                 _command.Parameters.AddWithValue("@id_subject", _subject.id_subject);
                 _command.ExecuteNonQuery();
             }

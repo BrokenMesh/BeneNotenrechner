@@ -10,51 +10,62 @@ namespace BeneNotenrechner.Controllers
 {
     [ApiController]
     [Route("nt/[controller]")]
-    public class NT_SubjectController : ControllerBase
+    public class NT_GradeController : ControllerBase
     {
         [HttpPost]
-        public IActionResult Post(NetSubjectRequest _request) {
+        public IActionResult Post(NetGradeRequest _request) {
             User? _user = UserManager.GetUserFromToken(uint.Parse(_request.Token));
             if (_user == null) return BadRequest(JsonSerializer.Serialize(new NetError("Could not resolve User!")));
-            
+
             Profile? _profile = _user.GetProfile();
             if (_profile == null) return BadRequest(JsonSerializer.Serialize(new NetError("Could not resolve Profile!")));
 
             SuperSubject? _superSubject = _profile.GetSuperSubject(int.Parse(_request.SuperSubjectID));
             if (_superSubject == null) return BadRequest(JsonSerializer.Serialize(new NetError("Could not resolve SuperSubject!")));
 
-            List<Subject> _subjects = _superSubject.subjects;
-            List<NetSubjectResponse> _response = new List<NetSubjectResponse>();
+            Subject? _subject = _superSubject.GetSubject(int.Parse(_request.SubjectID));
+            if (_subject == null) return BadRequest(JsonSerializer.Serialize(new NetError("Could not resolve Subject!")));
 
-            foreach (Subject _subject in _subjects) {
-                _response.Add(new NetSubjectResponse(
-                    _subject.id_subject.ToString(), 
-                    _subject.name));
+            List<Grade> _grades = _subject.grades;
+            List<NetGradeResponse> _response = new List<NetGradeResponse>();
+
+            foreach (Grade _grade in _grades) {
+                _response.Add(new NetGradeResponse(
+                    _grade.id_grade.ToString(), 
+                    _grade.grade, 
+                    _grade.date.ToShortDateString(), 
+                    _grade.name));
             }
 
             return Ok(JsonSerializer.Serialize(_response));
         }
     }
 
-    public class NetSubjectRequest
+    public class NetGradeRequest
     {
         [Required] public string Token { get; }
         [Required] public string SuperSubjectID { get; }
+        [Required] public string SubjectID { get; }
 
-        public NetSubjectRequest(string token, string superSubjectID) {
+        public NetGradeRequest(string token, string superSubjectID, string subjectID) {
             Token = token;
             SuperSubjectID = superSubjectID;
+            SubjectID = subjectID;
         }
     }
 
-    public class NetSubjectResponse
+    public class NetGradeResponse
     {
         [Required] public string Id { get; }
-        [Required] public string Name { get; }
+        [Required] public float Grade { get; }
+        [Required] public string Date { get; }
+        [Required] public string name { get; }
 
-        public NetSubjectResponse(string id, string name) {
+        public NetGradeResponse(string id, float grade, string date, string name) {
             Id = id;
-            Name = name;
+            Grade = grade;
+            Date = date;
+            this.name = name;
         }
     }
 }

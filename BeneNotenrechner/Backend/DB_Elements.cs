@@ -19,8 +19,6 @@
             foreach (SuperSubject _superSubject in superSubjects) {
                 if(_superSubject.id_supersubject == _id) return _superSubject;
             }
-
-
             return null;
         }
     }
@@ -40,6 +38,13 @@
             this.name = name;
             this.semester = semester;
             subjects = new List<Subject>();
+        }
+
+        public Subject? GetSubject(int _id) {
+            foreach (Subject _subject in subjects) {
+                if (_subject.id_subject == _id) return _subject;
+            }
+            return null;
         }
     }
 
@@ -65,12 +70,14 @@
         public int id_grade;
         public float grade;
         public DateTime date;
+        public string name;
         public int id_subject;
 
-        public Grade(int id_grade, float grade, DateTime date, int id_subject) {
+        public Grade(int id_grade, float grade, DateTime date, string name, int id_subject) {
             this.id_grade = id_grade;
             this.grade = grade;
             this.date = date;
+            this.name = name;
             this.id_subject = id_subject;
         }
     }

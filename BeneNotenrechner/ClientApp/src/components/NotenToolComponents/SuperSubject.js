@@ -37,13 +37,13 @@ export class SuperSubject extends Component {
         fetchdata();
     }
 
-    renderSubjects(subjects) {
+    renderSubjects(subjects, SuperSubjectId) {
         return (
             <div className="p-2 w-100 d-flex gap-3">
                 {
                     subjects.map((subject) => {
                         return (
-                            <Subject name={subject.Name} id={subject.Id} key={subject.Id} />
+                            <Subject name={subject.Name} id={subject.Id} supersubject_id={SuperSubjectId} key={subject.Id} />
                         )
                     })
                 }
@@ -51,12 +51,11 @@ export class SuperSubject extends Component {
         );
     }
 
-
     render() {
 
         let contents = this.state.Loading
             ? <p><em>Loading...</em></p>
-            : this.renderSubjects(this.state.Subjects);
+            : this.renderSubjects(this.state.Subjects, this.props.id);
 
         return (
             <div>

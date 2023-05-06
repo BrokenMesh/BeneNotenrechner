@@ -10,54 +10,49 @@ namespace BeneNotenrechner.Controllers
 {
     [ApiController]
     [Route("nt/[controller]")]
-    public class NT_SuperSubjectController : ControllerBase
+    public class NT_SubjectController : ControllerBase
     {
         [HttpPost]
-        public IActionResult Post(NetSuperSubjectRequest _request) {
+        public IActionResult Post(NetSubjectRequest _request) {
             User? _user = UserManager.GetUserFromToken(uint.Parse(_request.Token));
             if (_user == null) return BadRequest(JsonSerializer.Serialize(new NetError("Could not resolve User!")));
             
             Profile? _profile = _user.GetProfile();
             if (_profile == null) return BadRequest(JsonSerializer.Serialize(new NetError("Could not resolve Profile!")));
-            
-            List<SuperSubject> _superSubjects = _profile.superSubjects;
-            List<NetSuperSubjectResponse> _response = new List<NetSuperSubjectResponse>();
 
-            foreach (SuperSubject _superSubject in _superSubjects) {
-                _response.Add(new NetSuperSubjectResponse(
-                    _superSubject.id_supersubject.ToString(), _superSubject.name, _superSubject.semester.ToString()));
+            SuperSubject? _superSubject = _profile.GetSuperSubject(int.Parse(_request.SuperSubjectID));
+            if (_superSubject == null) return BadRequest();
+
+            List<Subject> _subjects = _superSubject.subjects;
+            List<NetSubjectResponse> _response = new List<NetSubjectResponse>();
+
+            foreach (Subject _subject in _subjects) {
+                _response.Add(new NetSubjectResponse(_subject.id_subject.ToString(), _subject.name));
             }
 
             return Ok(JsonSerializer.Serialize(_response));
         }
     }
 
-    public class NetSuperSubjectRequest {
+    public class NetSubjectRequest
+    {
         [Required] public string Token { get; }
-        [Required] public string Profile { get; }
+        [Required] public string SuperSubjectID { get; }
 
-        public NetSuperSubjectRequest(string token, string profile) {
+        public NetSubjectRequest(string token, string superSubjectID) {
             Token = token;
-            Profile = profile;
+            SuperSubjectID = superSubjectID;
         }
     }
 
-    public class NetSuperSubjectResponse {
+    public class NetSubjectResponse
+    {
         [Required] public string Id { get; }
         [Required] public string Name { get; }
-        [Required] public string Semester { get; }
 
-        public NetSuperSubjectResponse(string id, string name, string semester) {
+        public NetSubjectResponse(string id, string name) {
             Id = id;
             Name = name;
-            Semester = semester;
-        }
-    }
-
-    public class NetError {
-        [Required] public string Error { get; }
-        public NetError(string error) {
-            Error = error;
         }
     }
 }

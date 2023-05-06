@@ -17,6 +17,8 @@
         }
 
         public static Tuple<string, string> LoginUser(string _username, string _password) {
+            
+            // Validation
             if (_username.Length > 45) return new Tuple<string, string>("", "Error: username is to long");
 
             int _userid = DBManager.instance.GetUser(_username);
@@ -26,8 +28,17 @@
                 if (_userid == -1) return new Tuple<string, string>("", "Error: could not create new user");
             }
 
-            if (!DBManager.instance.CheckPassword(_userid, _password)) return new Tuple<string, string>("", "Password ist incorrect!");  
+            if (!DBManager.instance.CheckPassword(_userid, _password)) return new Tuple<string, string>("", "Password ist incorrect!");
 
+            // Remove duplicate User
+            foreach (var _userkvp in userlist) {
+                if (_userkvp.Value.Id == _userid) { 
+                    userlist.Remove(_userkvp.Key);
+                    break;
+                }
+            }
+
+            // Generate session token for authentication 
             uint _token = (uint)random.Next(1_000_000_000, int.MaxValue);
 
             while(userlist.ContainsKey(_token)) {
@@ -65,12 +76,12 @@
             }
         }
 
-        public static int GetUserIdFromToken(uint _token) {
+        public static User? GetUserFromToken(uint _token) {
             if (userlist.ContainsKey(_token)) {
-                return userlist[_token].Id;
+                return userlist[_token];
             }
 
-            return -1;
+            return null;
         }
     }
 }

@@ -14,6 +14,15 @@
             this.id_user = id_user;
             superSubjects = new List<SuperSubject>();
         }
+
+        public SuperSubject? GetSuperSubject(int _id) { 
+            foreach (SuperSubject _superSubject in superSubjects) {
+                if(_superSubject.id_supersubject == _id) return _superSubject;
+            }
+
+
+            return null;
+        }
     }
 
     public class SuperSubject

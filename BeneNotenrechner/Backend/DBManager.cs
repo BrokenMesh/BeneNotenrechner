@@ -1,4 +1,6 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Microsoft.VisualBasic;
+using MySql.Data.MySqlClient;
+using System.Xml.Linq;
 
 namespace BeneNotenrechner.Backend
 {
@@ -259,7 +261,50 @@ namespace BeneNotenrechner.Backend
         #endregion PROFILE_CREATION
 
         #region PROFILE_UPDATE
+
+        public void UpdateSubject(Subject _newSubject) {
+            OpenStream();
+
+            string _sql = "UPDATE `benenotenrechner_db`.`tbl_subject` SET `name` = @name WHERE `subject_id` = @subject_id;";
+            using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
+                _command.Parameters.AddWithValue("@name", _newSubject.name);
+                _command.Parameters.AddWithValue("@subject_id", _newSubject.id_subject);
+                _command.ExecuteNonQuery();
+            }
+
+            CloseStream();
+        }
+
+
         #endregion PROFILE_UPDATE
+
+        #region PROFILE_DELETE
+
+        public void DeleteSubject(Subject _subject) {
+            OpenStream();
+
+            string _sql = "DELETE FROM `benenotenrechner_db`.`tbl_subject` WHERE `subject_id` = @subject_id;";
+            using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
+                _command.Parameters.AddWithValue("@subject_id", _subject.id_subject);
+                _command.ExecuteNonQuery();
+            }
+
+            CloseStream();
+        }
+
+        internal void DeleteGrade(Grade _grade) {
+            OpenStream();
+
+            string _sql = "DELETE FROM `benenotenrechner_db`.`tbl_grade` WHERE `grade_id` = @grade_id;";
+            using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
+                _command.Parameters.AddWithValue("@grade_id", _grade.id_grade);
+                _command.ExecuteNonQuery();
+            }
+
+            CloseStream();
+        }
+
+        #endregion PROFILE_DELETE
 
         private void CloseStream() {
             isStreamOpen = true;
@@ -271,6 +316,5 @@ namespace BeneNotenrechner.Backend
             }
             isStreamOpen = false;
         }
-
     }
 }

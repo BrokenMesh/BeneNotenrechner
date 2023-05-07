@@ -9,6 +9,7 @@ export class SuperSubject extends Component {
     constructor(props) {
         super(props);
         this.state = { Subjects: [], Loading: true };
+        this.reload = this.reload.bind(this);
     }
 
     populateData(context, SuperSubjectId) {
@@ -43,12 +44,16 @@ export class SuperSubject extends Component {
                 {
                     subjects.map((subject) => {
                         return (
-                            <Subject name={subject.Name} id={subject.Id} supersubject_id={SuperSubjectId} key={subject.Id} />
+                            <Subject name={subject.Name} id={subject.Id} supersubject_id={SuperSubjectId} key={subject.Id} parent={this} />
                         )
                     })
                 }
             </div>
         );
+    }
+
+    reload(context) {
+        this.populateData(context, this.props.id);
     }
 
     render() {

@@ -63,6 +63,18 @@
             this.name = name;
             grades = new List<Grade>();
         }
+
+        public void Update(string _name) { 
+            name = _name;
+            DBManager.instance.UpdateSubject(this);
+        }
+
+        public void Delete() {
+            foreach (Grade _grade in grades) {
+                _grade.Delete();
+            }
+            DBManager.instance.DeleteSubject(this);
+        }
     }
 
     public class Grade
@@ -79,6 +91,10 @@
             this.date = date;
             this.name = name;
             this.id_subject = id_subject;
+        }
+
+        public void Delete() {
+            DBManager.instance.DeleteGrade(this);
         }
     }
 

@@ -9,8 +9,8 @@ import { StateProvider } from './components/StateProvider';
 export default class App extends Component {
   static displayName = App.name;
 
-  render() {
-      return (
+    render() {
+        return (
         <div>
             <StateProvider>          
                 <Authenticat>
@@ -24,5 +24,5 @@ export default class App extends Component {
             </StateProvider>
         </div>
     );
-  }
+    }
 }

@@ -10,6 +10,8 @@ const context =  [
     "/nt/nt_supersubject",
     "/nt/nt_subject",
     "/nt/nt_grade",
+    "/nt/nt_updatesubject",
+    "/nt/nt_deletesubject",
 ];
 
 module.exports = function(app) {

@@ -15,7 +15,10 @@ export class StateProvider extends Component {
                     }),
                     setAuthenticatedState: (value) => this.setState({
                         isAuthenticated: value
-                    })
+                    }),
+                    forceUpdate: () => {
+                        this.props.rerender();
+                    }
                 }}>
                 {this.props.children}
             </MContext.Provider>)

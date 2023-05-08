@@ -75,6 +75,11 @@
             }
             DBManager.instance.DeleteSubject(this);
         }
+
+        public void CreateGrade(string grade_Name, string grade_Grade, string grade_Date) {
+            DBManager.instance.CreateGrade(this, float.Parse(grade_Grade), DateTime.Parse(grade_Date), grade_Name);
+            grades = DBManager.instance.GetGradeAll(this);
+        }
     }
 
     public class Grade

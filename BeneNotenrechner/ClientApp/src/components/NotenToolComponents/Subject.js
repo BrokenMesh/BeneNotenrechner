@@ -1,13 +1,26 @@
 ﻿import React, { Component } from 'react';
 import { MContext } from '../StateProvider';
 import { Grade } from './Grade';
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+
 
 export class Subject extends Component {
     static displayName = Subject.name;
 
     constructor(props) {
         super(props);
-        this.state = { Grades: [], Loading: true, Name: props.name + "" };
+        this.state = {
+            Grades: [],
+            Loading: true,
+            Name: props.name + "",
+            NewGrade: {
+                name: "",
+                date: new Date(),
+                grade: "",
+            }
+        };
     }
 
     populateData(context, SubjectId, SuperSubjectID) {
@@ -84,6 +97,65 @@ export class Subject extends Component {
         asDeleteSubject();
     }
 
+    createGrade(context, SuperSubjectID, SubjectId, Grade) {
+        const asCreateGrade= async () => {
+
+            const data = {
+                Token: context.state.token,
+                SubjectID: SubjectId + "",
+                SuperSubjectID: SuperSubjectID + "",
+                Grade_Name: Grade.name,
+                Grade_Grade: Grade.grade,
+                Grade_Date: Grade.date
+            }
+
+            console.log(JSON.stringify(data));
+
+            const result = await fetch('nt/nt_creategrade', {
+                method: 'Post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+
+            this.reload(context);
+        }
+
+        asCreateGrade();
+    }
+
+    updateSubjectName(event) {
+        this.setState({ Name: event.target.value })
+    }
+
+    resetSettingsValues() {
+        this.setState({ Name: this.props.name + "" })
+    }
+
+    updateNewGradeName(event) {
+        const grade = this.state.NewGrade;
+        grade.name = event.target.value;
+        this.setState({ NewGrade: grade })
+    }
+
+    updateNewGradeGrade(event) {
+        const value = (isFinite(event.target.value)) ? event.target.value : this.state.NewGrade.grade;
+        const grade = this.state.NewGrade;
+        grade.grade = event.target.value;
+        this.setState({ NewGrade: grade })
+    }
+
+    updateNewGradeDate(value) {
+        const grade = this.state.NewGrade;
+        grade.date = value;
+        this.setState({ NewGrade: grade })
+    }
+
+    reload(context) {
+        this.populateData(context, this.props.id);
+    }
+
     renderGrades(grades) {
         return (
             <table className="table table-striped">
@@ -95,7 +167,7 @@ export class Subject extends Component {
                         <th></th>
                     </tr>
                 </thead>
-                 <tbody>
+                <tbody>
                     {
                         grades.map((grade) => {
                             return (
@@ -106,14 +178,6 @@ export class Subject extends Component {
                 </tbody>
             </table>
         );
-    }
-
-    updateSubjectName(event) {
-        this.setState({ Name: event.target.value })
-    }
-
-    resetSettingsValues() {
-        this.setState({ Name: this.props.name + "" })
     }
 
     render() {
@@ -150,6 +214,7 @@ export class Subject extends Component {
                                     <h4>Prüfungen:</h4>
                                     <br/>
                                     {contents}
+                                    <button type="button" data-bs-toggle="modal" data-bs-target={"#subjectcreate" + this.props.id} className="btn btn-primary btn-sm">Hinzufügen</button>
 
                                 </div>
                                 <div className="modal-footer">
@@ -171,11 +236,11 @@ export class Subject extends Component {
                                         <div className="mb-3">
                                             <label htmlFor="subject-name" className="col-form-label">Name:</label>
                                             <input type="text" className="form-control" id="subject-name"
-                                                onChange={(evt) => { this.updateSubjectName(evt) }} value={this.state.Name} />
+                                                onChange={(evt) => { this.updateSubjectName(evt) }} value={this.state.Name} required/>
                                         </div>
                                         <br/>
                                         <div className="mb-3">
-                                                    <button type="button" className="btn btn-danger btn-sm" data-bs-dismiss="modal" onClick={() => this.deleteSubject(context, this.props.supersubject_id, this.props.id)}>Fach Löschen</button>
+                                            <button type="button" className="btn btn-danger btn-sm" data-bs-dismiss="modal" onClick={() => this.deleteSubject(context, this.props.supersubject_id, this.props.id)}>Fach Löschen</button>
                                         </div>
                                     </form>
                                 </div>
@@ -187,8 +252,42 @@ export class Subject extends Component {
                         </div>
                     </div>
 
+                    <div className="modal fade" id={"subjectcreate" + this.props.id} tabIndex="-1" aria-labelledby="createmodalLabel" aria-hidden="true">
+                        <div className="modal-dialog modal-dialog-centered ">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h1 className="modal-title fs-5" id="createmodalLabel"> Neue Noten Hinzufügen </h1>
+                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div className="modal-body">
+                                    <form>
+                                        <div className="mb-2">
+                                            <label htmlFor="grade-name" className="col-form-label">Name:</label>
+                                            <input type="text" className="form-control" id="grade-name"
+                                                onChange={(evt) => { this.updateNewGradeName(evt) }} value={this.state.NewGrade.name} required/>
+                                        </div>
+                                        <div className="mb-2">
+                                            <label htmlFor="grade-grade" className="col-form-label">Note:</label>
+                                            <input type="text" className="form-control" id="grade-grade"
+                                                onChange={(evt) => { this.updateNewGradeGrade(evt) }} value={this.state.NewGrade.grade} required/>
+                                        </div>
+                                        <div id="date-picker" className="mb-2 input-with-post-icon datepicker">
+                                            <label htmlFor="grade-date" className="col-form-label">Datum:</label>
+                                            <DatePicker id="grade-date" selected={ this.state.NewGrade.date }  onChange={(date) => this.updateNewGradeDate(date)} />
+                                        </div>
+                                    </form>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => this.createGrade(context, this.props.supersubject_id, this.props.id, this.state.NewGrade)}>Hinzufügen</button>
+                                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
-                    )
+                )
                 }}
                 </MContext.Consumer>
             </div>

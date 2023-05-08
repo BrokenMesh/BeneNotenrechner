@@ -7,11 +7,15 @@ const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_H
 const context =  [
     "/logincall",
     "/reauthenticate",
+
     "/nt/nt_supersubject",
+
     "/nt/nt_subject",
-    "/nt/nt_grade",
     "/nt/nt_updatesubject",
     "/nt/nt_deletesubject",
+
+    "/nt/nt_grade",
+    "/nt/nt_creategrade",
 ];
 
 module.exports = function(app) {

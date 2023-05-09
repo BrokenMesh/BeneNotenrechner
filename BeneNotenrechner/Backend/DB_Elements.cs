@@ -15,9 +15,11 @@
             superSubjects = new List<SuperSubject>();
         }
 
-        public SuperSubject? GetSuperSubject(int _id) { 
-            foreach (SuperSubject _superSubject in superSubjects) {
-                if(_superSubject.id_supersubject == _id) return _superSubject;
+        public SuperSubject? GetSuperSubject(string _strID) {
+            if (int.TryParse(_strID, out int _id)) {
+                foreach (SuperSubject _superSubject in superSubjects) {
+                    if (_superSubject.id_supersubject == _id) return _superSubject;
+                }
             }
             return null;
         }
@@ -40,9 +42,11 @@
             subjects = new List<Subject>();
         }
 
-        public Subject? GetSubject(int _id) {
-            foreach (Subject _subject in subjects) {
-                if (_subject.id_subject == _id) return _subject;
+        public Subject? GetSubject(string _strID) {
+            if (int.TryParse(_strID, out int _id)) {
+                foreach (Subject _subject in subjects) {
+                    if (_subject.id_subject == _id) return _subject;
+                }
             }
             return null;
         }

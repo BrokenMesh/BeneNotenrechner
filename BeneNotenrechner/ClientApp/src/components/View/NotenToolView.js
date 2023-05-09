@@ -31,7 +31,9 @@ export class NotenToolView extends Component {
 
             console.log(superSubjectData);
 
-            this.setState({ SuperSubjects: superSubjectData, Loading: false });
+            if (superSubjectData.Error == null) {
+                this.setState({ SuperSubjects: superSubjectData, Loading: false });
+            }
         }
 
         fetchdata();

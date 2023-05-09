@@ -32,7 +32,9 @@ export class SuperSubject extends Component {
 
             console.log(subjectData);
 
-            this.setState({ Subjects: subjectData, Loading: false });
+            if (subjectData.Error == null) {
+                this.setState({ Subjects: subjectData, Loading: false });
+            }
         }
 
         fetchdata();

@@ -15,16 +15,16 @@ namespace BeneNotenrechner.Controllers
     {
         [HttpPost]
         public IActionResult Post(NetCreateGradRequest _request) {
-            User? _user = UserManager.GetUserFromToken(uint.Parse(_request.Token));
+            User? _user = UserManager.GetUserFromToken(_request.Token);
             if (_user == null) return BadRequest(JsonSerializer.Serialize(new NetError("Could not resolve User!")));
 
             Profile? _profile = _user.GetProfile();
             if (_profile == null) return BadRequest(JsonSerializer.Serialize(new NetError("Could not resolve Profile!")));
 
-            SuperSubject? _superSubject = _profile.GetSuperSubject(int.Parse(_request.SuperSubjectID));
+            SuperSubject? _superSubject = _profile.GetSuperSubject(_request.SuperSubjectID);
             if (_superSubject == null) return BadRequest(JsonSerializer.Serialize(new NetError("Could not resolve SuperSubject!")));
 
-            Subject? _subject = _superSubject.GetSubject(int.Parse(_request.SubjectID));
+            Subject? _subject = _superSubject.GetSubject(_request.SubjectID);
             if (_subject == null) return BadRequest(JsonSerializer.Serialize(new NetError("Could not resolve Subject!")));
 
             _subject.CreateGrade(_request.Grade_Name, _request.Grade_Grade, _request.Grade_Date);

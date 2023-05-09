@@ -76,9 +76,11 @@
             }
         }
 
-        public static User? GetUserFromToken(uint _token) {
-            if (userlist.ContainsKey(_token)) {
-                return userlist[_token];
+        public static User? GetUserFromToken(string _strToken) {
+            if (uint.TryParse(_strToken, out uint _token)) {
+                if (userlist.ContainsKey(_token)) {
+                    return userlist[_token];
+                }
             }
 
             return null;

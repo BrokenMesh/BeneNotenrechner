@@ -21,6 +21,8 @@ export class Subject extends Component {
                 grade: "",
             }
         };
+
+        this.reload = this.reload.bind(this);
     }
 
     populateData(context, SubjectId, SuperSubjectID) {
@@ -42,9 +44,9 @@ export class Subject extends Component {
 
             const gradeData = await result.json();
 
-            console.log(gradeData);
-
-            this.setState({ Grades: gradeData, Loading: false });
+            if (gradeData.Error == null) {
+                this.setState({ Grades: gradeData, Loading: false });
+            }
         }
 
         fetchdata();
@@ -153,38 +155,66 @@ export class Subject extends Component {
     }
 
     reload(context) {
-        this.populateData(context, this.props.id);
+        this.populateData(context, this.props.id, this.props.supersubject_id);
     }
 
-    renderGrades(grades) {
+    renderTableGrades(grades) {
         return (
-            <table className="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Bewertung</th>
-                        <th>Datum</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        grades.map((grade) => {
-                            return (
-                                <Grade name={grade.name} grade_value={grade.Grade} date={grade.Date} id={grade.Id} key={grade.Id} />
-                            )
-                        })
-                    }
-                </tbody>
-            </table>
+            <div>
+                <table className="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Bewertung</th>
+                            <th>Datum</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            grades.map((grade) => {
+                                return (
+                                    <tr key={grade.Id}>
+                                        <td>{grade.name}</td>
+                                        <td>{grade.Grade}</td>
+                                        <td>{grade.Date}</td>
+                                        <td>
+                                            <button type="button" data-bs-toggle="modal" data-bs-target={"#gradeedit" + grade.Id} className="btn btn-primary btn-sm">Bearbeiten</button>
+                                        </td>
+                                    </tr>
+                                )
+                            })
+                        }
+                    </tbody>
+                </table>
+            </div>
+        );
+    }
+
+    renderModalGrades(grades) {
+        return (
+            <div>
+                {
+                    grades.map((grade) => {
+                        return (
+                            <Grade name={grade.name} grade_value={grade.Grade} date={grade.Date} id={grade.Id}
+                                key={grade.Id} supersubjectid={this.props.supersubject_id} subjectid={this.props.id} parent={this} />
+                        )
+                    })
+                }
+            </div>
         );
     }
 
     render() {
 
-        let contents = this.state.Loading
+        let table = this.state.Loading
             ? <p><em>Loading...</em></p>
-            : this.renderGrades(this.state.Grades);
+            : this.renderTableGrades(this.state.Grades);
+
+        let modals = this.state.Loading
+            ? <p><em>Loading...</em></p>
+            : this.renderModalGrades(this.state.Grades);
 
         return (
             <div>
@@ -213,7 +243,7 @@ export class Subject extends Component {
                                 <div style={{minHeight: 400}} className="modal-body">
                                     <h4>Prüfungen:</h4>
                                     <br/>
-                                    {contents}
+                                    {table}
                                     <button type="button" data-bs-toggle="modal" data-bs-target={"#subjectcreate" + this.props.id} className="btn btn-primary btn-sm">Hinzufügen</button>
 
                                 </div>
@@ -285,6 +315,7 @@ export class Subject extends Component {
                         </div>
                     </div>
 
+                    {modals}
 
                 </div>
                 )

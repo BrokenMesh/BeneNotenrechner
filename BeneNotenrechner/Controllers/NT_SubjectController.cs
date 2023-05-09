@@ -14,13 +14,13 @@ namespace BeneNotenrechner.Controllers
     {
         [HttpPost]
         public IActionResult Post(NetSubjectRequest _request) {
-            User? _user = UserManager.GetUserFromToken(uint.Parse(_request.Token));
+            User? _user = UserManager.GetUserFromToken(_request.Token);
             if (_user == null) return BadRequest(JsonSerializer.Serialize(new NetError("Could not resolve User!")));
             
             Profile? _profile = _user.GetProfile();
             if (_profile == null) return BadRequest(JsonSerializer.Serialize(new NetError("Could not resolve Profile!")));
 
-            SuperSubject? _superSubject = _profile.GetSuperSubject(int.Parse(_request.SuperSubjectID));
+            SuperSubject? _superSubject = _profile.GetSuperSubject(_request.SuperSubjectID);
             if (_superSubject == null) return BadRequest(JsonSerializer.Serialize(new NetError("Could not resolve SuperSubject!")));
 
             List<Subject> _subjects = _superSubject.subjects;

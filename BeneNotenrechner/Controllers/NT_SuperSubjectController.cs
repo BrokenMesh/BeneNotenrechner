@@ -14,7 +14,7 @@ namespace BeneNotenrechner.Controllers
     {
         [HttpPost]
         public IActionResult Post(NetSuperSubjectRequest _request) {
-            User? _user = UserManager.GetUserFromToken(uint.Parse(_request.Token));
+            User? _user = UserManager.GetUserFromToken(_request.Token);
             if (_user == null) return BadRequest(JsonSerializer.Serialize(new NetError("Could not resolve User!")));
             
             Profile? _profile = _user.GetProfile();

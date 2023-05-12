@@ -16,6 +16,8 @@ const context =  [
 
     "/nt/nt_grade",
     "/nt/nt_creategrade",
+    "/nt/nt_updategrade",
+    "/nt/nt_deletegrade",
 ];
 
 module.exports = function(app) {

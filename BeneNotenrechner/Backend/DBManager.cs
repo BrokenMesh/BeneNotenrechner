@@ -275,6 +275,20 @@ namespace BeneNotenrechner.Backend
             CloseStream();
         }
 
+        public void UpdateGrade(Grade _grade) {
+            OpenStream();
+
+            string _sql = "UPDATE `benenotenrechner_db`.`tbl_grade` SET `grade` = @grade, `date` = @date, `name` = @name WHERE `grade_id` = @grade_id;";
+            using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
+                _command.Parameters.AddWithValue("@grade", _grade.grade);
+                _command.Parameters.AddWithValue("@date", _grade.date);
+                _command.Parameters.AddWithValue("@name", _grade.name);
+                _command.Parameters.AddWithValue("@grade_id", _grade.id_grade);
+                _command.ExecuteNonQuery();
+            }
+
+            CloseStream();
+        }
 
         #endregion PROFILE_UPDATE
 

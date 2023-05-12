@@ -2,6 +2,7 @@
 import { Link } from "react-router-dom";
 import { MContext } from '../StateProvider';
 import DatePicker from 'react-datepicker';
+import { format } from "date-fns";
 
 export class Grade extends Component {
     static displayName = Grade.name;
@@ -21,19 +22,21 @@ export class Grade extends Component {
     updateGrade(context, SuperSubjectID, SubjectId, GradeID, Grade) {
         const asUpdateGrade = async () => {
 
+            const _date = format(Grade.date, 'yyyy-MM-dd', { awareOfUnicodeTokens: true })
+
             const data = {
                 Token: context.state.token,
                 SubjectID: SubjectId + "",
                 SuperSubjectID: SuperSubjectID + "",
                 GradeID: GradeID + "",
-                Grade_Name: Grade.name,
-                Grade_Grade: Grade.grade,
-                Grade_Date: Grade.date
+                Grade_Name: Grade.name + "",
+                Grade_Grade: Grade.grade + "",
+                Grade_Date: _date + ""
             }
 
             console.log(JSON.stringify(data));
 
-            const result = await fetch('nt/', {
+            const result = await fetch('nt/nt_updategrade', {
                 method: 'Post',
                 headers: {
                     'Content-Type': 'application/json'
@@ -45,6 +48,32 @@ export class Grade extends Component {
         }
 
         asUpdateGrade();
+    }
+
+    removeGrade(context, SuperSubjectID, SubjectId, GradeID,) {
+        const asRemoveGrade = async () => {
+
+            const data = {
+                Token: context.state.token,
+                SubjectID: SubjectId + "",
+                SuperSubjectID: SuperSubjectID + "",
+                GradeID: GradeID + "",
+            }
+
+            console.log(JSON.stringify(data));
+
+            const result = await fetch('nt/nt_deletegrade', {
+                method: 'Post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+
+            this.props.parent.reload(context);
+        }
+
+        asRemoveGrade();
     }
 
     updateEditGradeName(event) {
@@ -104,6 +133,13 @@ export class Grade extends Component {
                                         <div id="date-picker" className="mb-2 input-with-post-icon datepicker">
                                             <label htmlFor="grade-date" className="col-form-label">Datum:</label>
                                             <DatePicker id="grade-date" selected={this.state.EditGrade.date} onChange={(date) => this.updateEditGradeDate(date)} />
+                                        </div>
+                                        <br/>
+                                        <div className="mb-2">
+                                            <button type="button" className="btn btn-danger btn-sm" data-bs-dismiss="modal"
+                                                onClick={() => this.removeGrade(context, this.props.supersubjectid, this.props.subjectid, this.props.id)}>
+                                                Löschen
+                                            </button>
                                         </div>
                                     </form>
                                 </div>

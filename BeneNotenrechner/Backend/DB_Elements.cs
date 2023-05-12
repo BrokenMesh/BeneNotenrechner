@@ -68,6 +68,16 @@
             grades = new List<Grade>();
         }
 
+        public Grade? GetGrade(string _strID) {
+            if (int.TryParse(_strID, out int _id)) {
+                foreach (Grade _grade in grades) {
+                    if (_grade.id_grade == _id)
+                        return _grade;
+                }
+            }
+            return null;
+        }
+
         public void Update(string _name) { 
             name = _name;
             DBManager.instance.UpdateSubject(this);
@@ -79,7 +89,7 @@
             }
             DBManager.instance.DeleteSubject(this);
         }
-
+        
         public void CreateGrade(string grade_Name, string grade_Grade, string grade_Date) {
             DBManager.instance.CreateGrade(this, float.Parse(grade_Grade), DateTime.Parse(grade_Date), grade_Name);
             grades = DBManager.instance.GetGradeAll(this);
@@ -100,6 +110,20 @@
             this.date = date;
             this.name = name;
             this.id_subject = id_subject;
+        }
+
+        public void Update(string _name, string _strGrade, string _strDate) {
+            float _grade;
+            DateTime _date;
+
+            if (!float.TryParse(_strGrade, out _grade)) return;
+            if (!DateTime.TryParse(_strDate, out _date)) return;
+
+            name = _name;
+            grade = _grade;
+            date = _date;
+
+            DBManager.instance.UpdateGrade(this);
         }
 
         public void Delete() {

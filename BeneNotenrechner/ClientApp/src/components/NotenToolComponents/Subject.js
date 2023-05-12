@@ -2,6 +2,7 @@
 import { MContext } from '../StateProvider';
 import { Grade } from './Grade';
 import DatePicker from "react-datepicker";
+import { format } from "date-fns";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -102,13 +103,15 @@ export class Subject extends Component {
     createGrade(context, SuperSubjectID, SubjectId, Grade) {
         const asCreateGrade= async () => {
 
+            const _date = format(Grade.date, 'yyyy-MM-dd', { awareOfUnicodeTokens: true })
+
             const data = {
                 Token: context.state.token,
                 SubjectID: SubjectId + "",
                 SuperSubjectID: SuperSubjectID + "",
                 Grade_Name: Grade.name,
                 Grade_Grade: Grade.grade,
-                Grade_Date: Grade.date
+                Grade_Date: _date
             }
 
             console.log(JSON.stringify(data));
@@ -144,7 +147,7 @@ export class Subject extends Component {
     updateNewGradeGrade(event) {
         const value = (isFinite(event.target.value)) ? event.target.value : this.state.NewGrade.grade;
         const grade = this.state.NewGrade;
-        grade.grade = event.target.value;
+        grade.grade = value;
         this.setState({ NewGrade: grade })
     }
 

@@ -50,6 +50,11 @@
             }
             return null;
         }
+
+        public void CreateSubject(string _name) {
+            DBManager.instance.CreateSubject(this, _name);
+            subjects = DBManager.instance.GetSubjectAll(this, true);
+        }
     }
 
     public class Subject

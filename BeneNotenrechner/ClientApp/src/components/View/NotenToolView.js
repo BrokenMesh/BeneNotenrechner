@@ -47,12 +47,11 @@ export class NotenToolView extends Component {
         fetchdata();
     }
 
-    createSuperSubject(context, ProfileID, NewSuperSubject) {
+    createSuperSubject(context, NewSuperSubject) {
         const asCreateSuperSubject = async () => {
 
             const data = {
                 Token: context.state.token,
-                ProfileID: ProfileID + "",
                 Name: NewSuperSubject.name
             }
 
@@ -138,7 +137,7 @@ export class NotenToolView extends Component {
                                             </form>
                                         </div>
                                         <div className="modal-footer">
-                                            <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => this.createSuperSubject(context, 0, this.state.NewSuperSubject)}>Hinzufügen</button>
+                                            <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => this.createSuperSubject(context, this.state.NewSuperSubject)}>Hinzufügen</button>
                                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => this.resetNewSuperSubject()}>Abbrechen</button>
                                         </div>
                                     </div>

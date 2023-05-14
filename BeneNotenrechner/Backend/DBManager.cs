@@ -203,11 +203,12 @@ namespace BeneNotenrechner.Backend
         #endregion PROFILE_GETTERS
 
         #region PROFILE_CREATION
-        public Profile? CreateProfile(int _user_id) {
+        public Profile? CreateProfile(int _user_id, int _index) {
             OpenStream();
 
-            string _sql = "INSERT INTO `benenotenrechner_db`.`tbl_profile` (`id_users`) VALUES (@id_users);";
+            string _sql = "INSERT INTO `benenotenrechner_db`.`tbl_profile` (`index`, `id_users`) VALUES (@index, @id_users);";
             using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
+                _command.Parameters.AddWithValue("@index", _index);
                 _command.Parameters.AddWithValue("@id_users", _user_id);
                 _command.ExecuteNonQuery();
             }

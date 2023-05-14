@@ -32,12 +32,10 @@ namespace BeneNotenrechner.Controllers
     public class NetCreateSuperSubjectRequest
     {
         [Required] public string Token { get; }
-        [Required] public string ProfileID { get; }
         [Required] public string Name { get; }
 
-        public NetCreateSuperSubjectRequest(string token, string profileID, string name) {
+        public NetCreateSuperSubjectRequest(string token, string name) {
             Token = token;
-            ProfileID = profileID;
             Name = name;
         }
     }

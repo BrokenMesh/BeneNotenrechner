@@ -25,6 +25,7 @@
 
             if (_userid == -1) {
                 _userid = DBManager.instance.CreateUser(_username, _password);
+                DBManager.instance.CreateProfile(_userid, 1);
                 if (_userid == -1) return new Tuple<string, string>("", "Error: could not create new user");
             }
 

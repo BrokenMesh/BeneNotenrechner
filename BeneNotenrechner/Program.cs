@@ -24,7 +24,6 @@ namespace BeneNotenrechner {
             app.UseStaticFiles();
             app.UseRouting();
 
-
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller}/{action=Index}/{id?}");
@@ -35,34 +34,6 @@ namespace BeneNotenrechner {
             // DB
             DBManager db = new DBManager("localhost", "Hicham", "Hallosaid1", "benenotenrechner_db");
             UserManager.Start();
-
-            /*
-            // Testing - SampleData
-            //Profile _p = db.CreateProfile(3);
-            Profile _p = db.GetProfile(3, false);
-
-            //db.CreateSuperSubject(_p, "Demo1", 1);
-            //db.CreateSuperSubject(_p, "Demo2", 1);
-            //db.CreateSuperSubject(_p, "Demo3", 1);
-
-            List<SuperSubject> _superSubjects = db.GetSuperSubjectAll(_p, false);
-
-            foreach (SuperSubject superSubject in _superSubjects) {
-                //db.CreateSubject(superSubject, "ABU");
-                //db.CreateSubject(superSubject, "M122");
-                //db.CreateSubject(superSubject, "M320");
-
-                List<Subject> _subjects = db.GetSubjectAll(superSubject, false);
-
-                foreach (Subject _subject in _subjects) {
-                    db.CreateGrade(_subject, 5.5f, DateTime.Now, "ZP1");
-                    db.CreateGrade(_subject, 5.0f, DateTime.Now, "ZP2");
-                    db.CreateGrade(_subject, 4.5f, DateTime.Now, "ZP3");
-                    db.CreateGrade(_subject, 3.5f, DateTime.Now, "ZP4");
-                    db.CreateGrade(_subject, 1.0f, DateTime.Now, "ZP5");
-                }
-
-            }*/
 
             app.Run();
         }

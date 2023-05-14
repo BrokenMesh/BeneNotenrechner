@@ -34,8 +34,6 @@ export class Grade extends Component {
                 Grade_Date: _date + ""
             }
 
-            console.log(JSON.stringify(data));
-
             const result = await fetch('nt/nt_updategrade', {
                 method: 'Post',
                 headers: {
@@ -59,8 +57,6 @@ export class Grade extends Component {
                 SuperSubjectID: SuperSubjectID + "",
                 GradeID: GradeID + "",
             }
-
-            console.log(JSON.stringify(data));
 
             const result = await fetch('nt/nt_deletegrade', {
                 method: 'Post',

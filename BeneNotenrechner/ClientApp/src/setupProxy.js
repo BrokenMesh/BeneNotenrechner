@@ -9,8 +9,12 @@ const context =  [
     "/reauthenticate",
 
     "/nt/nt_supersubject",
+    "/nt/nt_createsupersubject", 
+    "/nt/nt_deletesupersubject", 
+    "/nt/nt_updatesupersubject", 
 
     "/nt/nt_subject",
+    "/nt/nt_createsubject",
     "/nt/nt_updatesubject",
     "/nt/nt_deletesubject",
 

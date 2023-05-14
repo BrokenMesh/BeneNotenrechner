@@ -8,7 +8,15 @@ export class NotenToolView extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { SuperSubjects: [], Loading: true };
+        this.state = {
+            SuperSubjects: [],
+            Loading: true,
+            NewSuperSubject: {
+                name: ""
+            }
+        };
+
+        this.reload = this.reload.bind(this);
     }
 
     populateData(context) {
@@ -29,14 +37,55 @@ export class NotenToolView extends Component {
 
             const superSubjectData = await result.json();
 
-            console.log(superSubjectData);
-
             if (superSubjectData.Error == null) {
                 this.setState({ SuperSubjects: superSubjectData, Loading: false });
+            } else {
+                console.log(superSubjectData.Error);
             }
         }
 
         fetchdata();
+    }
+
+    createSuperSubject(context, ProfileID, NewSuperSubject) {
+        const asCreateSuperSubject = async () => {
+
+            const data = {
+                Token: context.state.token,
+                ProfileID: ProfileID + "",
+                Name: NewSuperSubject.name
+            }
+
+            const result = await fetch('nt/nt_createsupersubject', {
+                method: 'Post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+
+            this.reload(context);
+        }
+
+        asCreateSuperSubject();
+    }
+
+    updateNewSuperSubjectName(event) {
+        let superSubject = this.state.NewSuperSubject;
+        superSubject.name = event.target.value;
+        this.setState({ NewSuperSubject: superSubject });
+    }
+
+    resetNewSuperSubject() {
+        this.setState({
+            NewSuperSubject: {
+                name: "",
+            }
+        });   
+    }
+
+    reload(contex) {
+        this.populateData(contex);
     }
 
     renderSuperSubjects(superSubjects) {
@@ -45,14 +94,13 @@ export class NotenToolView extends Component {
                 {
                     superSubjects.map((superSubject) => {
                         return (
-                            <SuperSubject name={superSubject.Name} semester={superSubject.Semester} id={superSubject.Id} key={superSubject.Id} />
+                            <SuperSubject name={superSubject.Name} id={superSubject.Id} key={superSubject.Id} parent={this} />
                         )
                     })
                 }
             </div>
         );
     }
-
 
     render() {
 
@@ -72,13 +120,40 @@ export class NotenToolView extends Component {
                     {(context) => {
                         if(this.state.Loading == true)
                             this.populateData(context);
-                        return (<div></div>)
+                        return (
+                            <div className="modal fade" id={"notentoolcreate"} tabIndex="-1" aria-labelledby="createmodalLabel" aria-hidden="true">
+                                <div className="modal-dialog modal-dialog-centered ">
+                                    <div className="modal-content">
+                                        <div className="modal-header">
+                                            <h1 className="modal-title fs-5" id="createmodalLabel"> Neues Überfach Hinzufügen </h1>
+                                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div className="modal-body">
+                                            <form>
+                                                <div className="mb-2">
+                                                    <label htmlFor="subject-name" className="col-form-label">Name:</label>
+                                                    <input type="text" className="form-control" id="subject-name"
+                                                        onChange={(evt) => { this.updateNewSuperSubjectName(evt) }} value={this.state.NewSuperSubject.name} required />
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div className="modal-footer">
+                                            <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => this.createSuperSubject(context, 0, this.state.NewSuperSubject)}>Hinzufügen</button>
+                                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => this.resetNewSuperSubject()}>Abbrechen</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )
                     }}
                 </MContext.Consumer>
                 <NavMenu />
 
-                <div style={menuStyle} className="container-sm">
+                <div style={menuStyle} className="container-sm ">
                     {contents}
+                    <div className="text-center p-3">
+                        <button type="button" className=" btn btn-outline-primary" data-bs-toggle="modal" data-bs-target={"#notentoolcreate"}>Hinzufügen</button>
+                    </div>
                 </div>
             </div>
         );

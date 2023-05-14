@@ -47,6 +47,8 @@ export class Subject extends Component {
 
             if (gradeData.Error == null) {
                 this.setState({ Grades: gradeData, Loading: false });
+            } else {
+                console.log(gradeData.Error);
             }
         }
 
@@ -113,8 +115,6 @@ export class Subject extends Component {
                 Grade_Grade: Grade.grade,
                 Grade_Date: _date
             }
-
-            console.log(JSON.stringify(data));
 
             const result = await fetch('nt/nt_creategrade', {
                 method: 'Post',

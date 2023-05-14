@@ -124,8 +124,8 @@ namespace BeneNotenrechner.Backend
                         _superSubjects.Add(new SuperSubject(
                             _reader.GetInt32("supersubject_id"),
                             _reader.GetInt32("id_profile"),
-                            _reader.GetString("name"),
-                            _reader.GetInt32("semester")));
+                            _reader.GetString("name")
+                            ));
                     }
                 }
             }
@@ -216,13 +216,12 @@ namespace BeneNotenrechner.Backend
             return GetProfile(_user_id, false);
         }
 
-        public void CreateSuperSubject(Profile _profile, string _name, int _semester) {
+        public void CreateSuperSubject(Profile _profile, string _name) {
             OpenStream();
 
-            string _sql = "INSERT INTO `benenotenrechner_db`.`tbl_supersubject` (`name`, `semester`, `id_profile`) VALUES (@name, @semester, @id_profile); ";
+            string _sql = "INSERT INTO `benenotenrechner_db`.`tbl_supersubject` (`name`, `id_profile`) VALUES (@name, @id_profile); ";
             using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
                 _command.Parameters.AddWithValue("@name", _name);
-                _command.Parameters.AddWithValue("@semester", _semester);
                 _command.Parameters.AddWithValue("@id_profile", _profile.id_profile);
                 _command.ExecuteNonQuery();
             }
@@ -262,13 +261,26 @@ namespace BeneNotenrechner.Backend
 
         #region PROFILE_UPDATE
 
-        public void UpdateSubject(Subject _newSubject) {
+        public void UpdateSuperSubject(SuperSubject _superSubject) {
+            OpenStream();
+
+            string _sql = "UPDATE `benenotenrechner_db`.`tbl_supersubject` SET `name` = @name WHERE `supersubject_id` = @supersubject_id;";
+            using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
+                _command.Parameters.AddWithValue("@name", _superSubject.name);
+                _command.Parameters.AddWithValue("@supersubject_id", _superSubject.id_supersubject);
+                _command.ExecuteNonQuery();
+            }
+
+            CloseStream();
+        }
+
+        public void UpdateSubject(Subject _subject) {
             OpenStream();
 
             string _sql = "UPDATE `benenotenrechner_db`.`tbl_subject` SET `name` = @name WHERE `subject_id` = @subject_id;";
             using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
-                _command.Parameters.AddWithValue("@name", _newSubject.name);
-                _command.Parameters.AddWithValue("@subject_id", _newSubject.id_subject);
+                _command.Parameters.AddWithValue("@name", _subject.name);
+                _command.Parameters.AddWithValue("@subject_id", _subject.id_subject);
                 _command.ExecuteNonQuery();
             }
 
@@ -293,6 +305,18 @@ namespace BeneNotenrechner.Backend
         #endregion PROFILE_UPDATE
 
         #region PROFILE_DELETE
+
+        public void DeleteSuperSubject(SuperSubject _superSubject) {
+            OpenStream();
+
+            string _sql = "DELETE FROM `benenotenrechner_db`.`tbl_supersubject` WHERE `supersubject_id` = @supersubject_id;";
+            using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
+                _command.Parameters.AddWithValue("@supersubject_id", _superSubject.id_supersubject);
+                _command.ExecuteNonQuery();
+            }
+
+            CloseStream();
+        }
 
         public void DeleteSubject(Subject _subject) {
             OpenStream();

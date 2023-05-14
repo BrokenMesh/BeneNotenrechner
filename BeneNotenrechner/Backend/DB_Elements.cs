@@ -1,4 +1,6 @@
-﻿namespace BeneNotenrechner.Backend
+﻿using System.Xml.Linq;
+
+namespace BeneNotenrechner.Backend
 {
 
     public class Profile
@@ -23,6 +25,11 @@
             }
             return null;
         }
+
+        public void CreateSuperSubject(string _name) {
+            DBManager.instance.CreateSuperSubject(this, _name);
+            superSubjects = DBManager.instance.GetSuperSubjectAll(this, true);
+        }
     }
 
     public class SuperSubject
@@ -30,15 +37,13 @@
         public int id_supersubject;
         public int id_profile;
         public string name;
-        public int semester;
 
         public List<Subject> subjects;
 
-        public SuperSubject(int id_supersubject, int id_profile, string name, int semester) {
+        public SuperSubject(int id_supersubject, int id_profile, string name) {
             this.id_supersubject = id_supersubject;
             this.id_profile = id_profile;
             this.name = name;
-            this.semester = semester;
             subjects = new List<Subject>();
         }
 
@@ -54,6 +59,18 @@
         public void CreateSubject(string _name) {
             DBManager.instance.CreateSubject(this, _name);
             subjects = DBManager.instance.GetSubjectAll(this, true);
+        }
+
+        public void Update(string _name) {
+            name = _name;
+            DBManager.instance.UpdateSuperSubject(this);
+        }
+
+        public void Delete() {
+            foreach (Subject _subject in subjects) {
+                _subject.Delete();
+            }
+            DBManager.instance.DeleteSuperSubject(this);
         }
     }
 

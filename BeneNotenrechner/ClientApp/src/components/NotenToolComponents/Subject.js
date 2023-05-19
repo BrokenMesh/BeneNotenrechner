@@ -20,6 +20,7 @@ export class Subject extends Component {
                 name: "",
                 date: new Date(),
                 grade: "",
+                evaluation: 1
             }
         };
 
@@ -113,6 +114,7 @@ export class Subject extends Component {
                 SuperSubjectID: SuperSubjectID + "",
                 Grade_Name: Grade.name,
                 Grade_Grade: Grade.grade,
+                Grade_Evaluation: Grade.evaluation,
                 Grade_Date: _date
             }
 
@@ -134,10 +136,6 @@ export class Subject extends Component {
         this.setState({ Name: event.target.value })
     }
 
-    resetSettingsValues() {
-        this.setState({ Name: this.props.name + "" })
-    }
-
     updateNewGradeName(event) {
         const grade = this.state.NewGrade;
         grade.name = event.target.value;
@@ -151,10 +149,32 @@ export class Subject extends Component {
         this.setState({ NewGrade: grade })
     }
 
+    updateNewGradeEvaluation(event) {
+        const value = (isFinite(event.target.value)) ? event.target.value : this.state.NewGrade.evaluation;
+        const grade = this.state.NewGrade;
+        grade.evaluation = value;
+        this.setState({ NewGrade: grade })
+    }
+
     updateNewGradeDate(value) {
         const grade = this.state.NewGrade;
         grade.date = value;
         this.setState({ NewGrade: grade })
+    }
+
+    resetSettingsValues() {
+        this.setState({ Name: this.props.name + "" })
+    }
+
+    resetNewGrade() {
+        this.setState({
+            NewGrade: {
+                name: "",
+                date: new Date(),
+                grade: "",
+                evaluation: 1
+            }
+        })
     }
 
     reload(context) {
@@ -178,7 +198,7 @@ export class Subject extends Component {
                             grades.map((grade) => {
                                 return (
                                     <tr key={grade.Id}>
-                                        <td>{grade.name}</td>
+                                        <td>{grade.Name}</td>
                                         <td>{grade.Grade}</td>
                                         <td>{grade.Date}</td>
                                         <td>
@@ -200,7 +220,7 @@ export class Subject extends Component {
                 {
                     grades.map((grade) => {
                         return (
-                            <Grade name={grade.name} grade_value={grade.Grade} date={grade.Date} id={grade.Id}
+                            <Grade name={grade.Name} grade_value={grade.Grade} evaluation={grade.Evaluation} date={grade.Date} id={grade.Id}
                                 key={grade.Id} supersubjectid={this.props.supersubject_id} subjectid={this.props.id} parent={this} />
                         )
                     })
@@ -290,7 +310,7 @@ export class Subject extends Component {
                             <div className="modal-content">
                                 <div className="modal-header">
                                     <h1 className="modal-title fs-5" id="createmodalLabel"> Neue Noten Hinzufügen </h1>
-                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => this.resetNewGrade()}></button>
                                 </div>
                                 <div className="modal-body">
                                     <form>
@@ -304,6 +324,11 @@ export class Subject extends Component {
                                             <input type="text" className="form-control" id="grade-grade"
                                                 onChange={(evt) => { this.updateNewGradeGrade(evt) }} value={this.state.NewGrade.grade} required/>
                                         </div>
+                                        <div className="mb-2">
+                                            <label htmlFor="grade-grade" className="col-form-label">Wertung:</label>
+                                            <input type="text" className="form-control" id="grade-grade"
+                                                onChange={(evt) => { this.updateNewGradeEvaluation(evt) }} value={this.state.NewGrade.evaluation} required />
+                                        </div>
                                         <div id="date-picker" className="mb-2 input-with-post-icon datepicker">
                                             <label htmlFor="grade-date" className="col-form-label">Datum:</label>
                                             <DatePicker id="grade-date" selected={ this.state.NewGrade.date }  onChange={(date) => this.updateNewGradeDate(date)} />
@@ -312,7 +337,7 @@ export class Subject extends Component {
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => this.createGrade(context, this.props.supersubject_id, this.props.id, this.state.NewGrade)}>Hinzufügen</button>
-                                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => this.resetNewGrade()}>Abbrechen</button>
                                 </div>
                             </div>
                         </div>

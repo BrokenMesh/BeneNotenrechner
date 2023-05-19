@@ -33,6 +33,7 @@ namespace BeneNotenrechner.Controllers
                 _response.Add(new NetGradeResponse(
                     _grade.id_grade.ToString(), 
                     _grade.grade, 
+                    _grade.evaluation,
                     _grade.date.ToShortDateString(), 
                     _grade.name));
             }
@@ -58,14 +59,16 @@ namespace BeneNotenrechner.Controllers
     {
         [Required] public string Id { get; }
         [Required] public float Grade { get; }
+        [Required] public float Evaluation { get; }
         [Required] public string Date { get; }
-        [Required] public string name { get; }
+        [Required] public string Name { get; }
 
-        public NetGradeResponse(string id, float grade, string date, string name) {
+        public NetGradeResponse(string id, float grade, float evaluation, string date, string name) {
             Id = id;
             Grade = grade;
+            Evaluation = evaluation;
             Date = date;
-            this.name = name;
+            Name = name;
         }
     }
 }

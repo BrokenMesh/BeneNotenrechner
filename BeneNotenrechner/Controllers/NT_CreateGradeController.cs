@@ -27,7 +27,7 @@ namespace BeneNotenrechner.Controllers
             Subject? _subject = _superSubject.GetSubject(_request.SubjectID);
             if (_subject == null) return BadRequest(JsonSerializer.Serialize(new NetError("Could not resolve Subject!")));
 
-            _subject.CreateGrade(_request.Grade_Name, _request.Grade_Grade, _request.Grade_Date);
+            _subject.CreateGrade(_request.Grade_Name, _request.Grade_Grade, _request.Grade_Evaluation, _request.Grade_Date);
 
             return Ok();
         }
@@ -40,14 +40,16 @@ namespace BeneNotenrechner.Controllers
         [Required] public string SuperSubjectID { get; }
         [Required] public string Grade_Name { get; }
         [Required] public string Grade_Grade { get; }
+        [Required] public string Grade_Evaluation{ get; }
         [Required] public string Grade_Date { get; }
 
-        public NetCreateGradRequest(string token, string subjectID, string superSubjectID, string grade_Name, string grade_Grade, string grade_Date) {
+        public NetCreateGradRequest(string token, string subjectID, string superSubjectID, string grade_Name, string grade_Grade, string grade_Evaluation, string grade_Date) {
             Token = token;
             SubjectID = subjectID;
             SuperSubjectID = superSubjectID;
             Grade_Name = grade_Name;
             Grade_Grade = grade_Grade;
+            Grade_Evaluation = grade_Evaluation;
             Grade_Date = grade_Date;
         }
     }

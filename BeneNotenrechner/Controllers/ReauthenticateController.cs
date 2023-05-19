@@ -12,7 +12,7 @@ namespace BeneNotenrechner.Controllers
     {
         [HttpPost]
         public IActionResult Post(NetReauthenticate _value) {
-            UserManager.ReauthenticateUser(uint.Parse(_value.Token));
+            UserManager.ReauthenticateUser(_value.Token);
             return Ok();
         }
     }

@@ -37,3 +37,4 @@ float Schnitt(float[] _noten, float[] _wertungen) {
 }
 ```
 Dies würde den Schnitt mit Respekt zu den Wertungen errechnen.
+

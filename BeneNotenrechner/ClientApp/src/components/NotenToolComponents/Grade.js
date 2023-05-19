@@ -14,6 +14,7 @@ export class Grade extends Component {
                 name: props.name,
                 date: new Date(),
                 grade: props.grade_value,
+                evaluation: props.evaluation,
             }
         };
     }
@@ -31,6 +32,7 @@ export class Grade extends Component {
                 GradeID: GradeID + "",
                 Grade_Name: Grade.name + "",
                 Grade_Grade: Grade.grade + "",
+                Grade_Evaluation: Grade.evaluation + "",
                 Grade_Date: _date + ""
             }
 
@@ -85,6 +87,13 @@ export class Grade extends Component {
         this.setState({ EditGrade: grade })
     }
 
+    updateEditGradeEvaluation(event) {
+        const value = (isFinite(event.target.value)) ? event.target.value : this.state.EditGrade.evaluation;
+        const grade = this.state.EditGrade;
+        grade.evaluation = value;
+        this.setState({ EditGrade: grade })
+    }
+
     updateEditGradeDate(value) {
         const grade = this.state.EditGrade;
         grade.date = value;
@@ -97,6 +106,7 @@ export class Grade extends Component {
                 name: this.props.name,
                 date: new Date(),
                 grade: this.props.grade_value,
+                evaluation: this.props.evaluation
             }
         });
     }
@@ -125,6 +135,11 @@ export class Grade extends Component {
                                             <label htmlFor="grade-grade" className="col-form-label">Note:</label>
                                             <input type="text" className="form-control" id="grade-grade"
                                                 onChange={(evt) => { this.updateEditGradeGrade(evt) }} value={this.state.EditGrade.grade} required />
+                                        </div>
+                                        <div className="mb-2">
+                                            <label htmlFor="grade-grade" className="col-form-label">Wertung:</label>
+                                            <input type="text" className="form-control" id="grade-grade"
+                                                onChange={(evt) => { this.updateEditGradeEvaluation(evt) }} value={this.state.EditGrade.evaluation} required />
                                         </div>
                                         <div id="date-picker" className="mb-2 input-with-post-icon datepicker">
                                             <label htmlFor="grade-date" className="col-form-label">Datum:</label>

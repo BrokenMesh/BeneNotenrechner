@@ -32,7 +32,7 @@ namespace BeneNotenrechner.Controllers {
             if (_grade == null)
                 return BadRequest(JsonSerializer.Serialize(new NetError("Could not resolve grade!")));
 
-            _grade.Update(_request.Grade_Name, _request.Grade_Grade, _request.Grade_Date);
+            _grade.Update(_request.Grade_Name, _request.Grade_Grade, _request.Grade_Evaluation , _request.Grade_Date);
 
             return Ok();
         }
@@ -45,15 +45,17 @@ namespace BeneNotenrechner.Controllers {
         [Required] public string GradeID { get; }
         [Required] public string Grade_Name { get; }
         [Required] public string Grade_Grade { get; }
+        [Required] public string Grade_Evaluation { get; }
         [Required] public string Grade_Date { get; }
 
-        public NetUpdateGradeRequest(string token, string superSubjectID, string subjectID, string gradeID, string grade_Name, string grade_Grade, string grade_Date) {
+        public NetUpdateGradeRequest(string token, string superSubjectID, string subjectID, string gradeID, string grade_Name, string grade_Grade, string grade_Evaluation, string grade_Date) {
             Token = token;
             SuperSubjectID = superSubjectID;
             SubjectID = subjectID;
             GradeID = gradeID;
             Grade_Name = grade_Name;
             Grade_Grade = grade_Grade;
+            Grade_Evaluation = grade_Evaluation;
             Grade_Date = grade_Date;
         }
     }

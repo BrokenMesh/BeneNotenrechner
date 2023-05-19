@@ -49,8 +49,8 @@
             userlist.Add(_token, new User(_userid, _username));
 
             Console.Write("> ");
-            foreach (uint _userId in userlist.Keys) 
-                Console.Write($"{userlist[_userId].Username}, ");
+            foreach (User _user in userlist.Values) 
+                Console.Write($"{_user.Username}, ");
             Console.WriteLine();
 
             return new Tuple<string, string>(_token.ToString(), "");
@@ -71,7 +71,11 @@
             }
         }
 
-        public static void ReauthenticateUser(uint _token) {
+        public static void ReauthenticateUser(string _strToken) {
+            uint _token;
+
+            if (!uint.TryParse(_strToken, out _token)) return;
+               
             if(userlist.ContainsKey(_token)) {
                 userlist[_token].SetAutenticationToNow();
             }

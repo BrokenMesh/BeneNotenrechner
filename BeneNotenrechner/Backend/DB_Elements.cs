@@ -112,8 +112,16 @@ namespace BeneNotenrechner.Backend
             DBManager.instance.DeleteSubject(this);
         }
         
-        public void CreateGrade(string grade_Name, string grade_Grade, string grade_Date) {
-            DBManager.instance.CreateGrade(this, float.Parse(grade_Grade), DateTime.Parse(grade_Date), grade_Name);
+        public void CreateGrade(string _gradeName, string _strGrade, string _strEvaluation, string _strDate) {
+            float _grade;
+            float _evaluation;
+            DateTime _date;
+
+            if (!float.TryParse(_strGrade, out _grade)) return;
+            if (!float.TryParse(_strEvaluation, out _evaluation)) return;
+            if (!DateTime.TryParse(_strDate, out _date)) return;
+
+            DBManager.instance.CreateGrade(this, _grade, _evaluation, _date, _gradeName);
             grades = DBManager.instance.GetGradeAll(this);
         }
     }
@@ -122,27 +130,32 @@ namespace BeneNotenrechner.Backend
     {
         public int id_grade;
         public float grade;
+        public float evaluation;
         public DateTime date;
         public string name;
         public int id_subject;
 
-        public Grade(int id_grade, float grade, DateTime date, string name, int id_subject) {
+        public Grade(int id_grade, float grade, float evaluation, DateTime date, string name, int id_subject) {
             this.id_grade = id_grade;
             this.grade = grade;
             this.date = date;
+            this.evaluation = evaluation;
             this.name = name;
             this.id_subject = id_subject;
         }
 
-        public void Update(string _name, string _strGrade, string _strDate) {
+        public void Update(string _name, string _strGrade, string _strEvaluation, string _strDate) {
             float _grade;
+            float _evaluation;
             DateTime _date;
 
             if (!float.TryParse(_strGrade, out _grade)) return;
+            if (!float.TryParse(_strEvaluation, out _evaluation)) return;
             if (!DateTime.TryParse(_strDate, out _date)) return;
 
             name = _name;
             grade = _grade;
+            evaluation = _evaluation;
             date = _date;
 
             DBManager.instance.UpdateGrade(this);

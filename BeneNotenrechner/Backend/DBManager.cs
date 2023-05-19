@@ -165,6 +165,7 @@ namespace BeneNotenrechner.Backend
             if (_resolveChildren) {
                 foreach (Subject _subject in _subjects) {
                     _subject.grades = GetGradeAll(_subject);
+                    _subject.EvaluateAverage();
                 }
             }
 

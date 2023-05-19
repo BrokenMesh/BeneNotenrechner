@@ -155,7 +155,7 @@ export class SuperSubject extends Component {
                 {
                     subjects.map((subject) => {
                         return (
-                            <Subject name={subject.Name} id={subject.Id} supersubject_id={SuperSubjectId} key={subject.Id} parent={this} />
+                            <Subject name={subject.Name} average={subject.Average} id={subject.Id} supersubject_id={SuperSubjectId} key={subject.Id} parent={this} />
                         )
                     })
                     

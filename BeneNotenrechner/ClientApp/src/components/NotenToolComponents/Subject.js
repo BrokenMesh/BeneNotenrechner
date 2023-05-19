@@ -74,7 +74,7 @@ export class Subject extends Component {
                 body: JSON.stringify(data)
             })
 
-            this.props.parent.reload(context);
+            this.reload(context);
         }
 
         asUpdateSubject();
@@ -97,7 +97,7 @@ export class Subject extends Component {
                 body: JSON.stringify(data)
             })
 
-            this.props.parent.reload(context);
+            this.reload(context);
         }
 
         asDeleteSubject();
@@ -114,7 +114,7 @@ export class Subject extends Component {
                 SuperSubjectID: SuperSubjectID + "",
                 Grade_Name: Grade.name,
                 Grade_Grade: Grade.grade,
-                Grade_Evaluation: Grade.evaluation,
+                Grade_Evaluation: Grade.evaluation + "",
                 Grade_Date: _date
             }
 
@@ -178,7 +178,7 @@ export class Subject extends Component {
     }
 
     reload(context) {
-        this.populateData(context, this.props.id, this.props.supersubject_id);
+        this.props.parent.reload(context);
     }
 
     renderTableGrades(grades) {
@@ -252,7 +252,7 @@ export class Subject extends Component {
                             <button type="button" data-bs-toggle="modal" data-bs-target={"#subject" + this.props.id} className="btn btn-primary"> {this.props.name} </button>
                         </div>
                         <div className="row p-1">
-                            <b className="text-center border rounded p-1">5.5</b>
+                            <b className="text-center border rounded p-1">{ this.props.average }</b>
                         </div>
                     </div>
 

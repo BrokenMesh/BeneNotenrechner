@@ -29,7 +29,8 @@ namespace BeneNotenrechner.Controllers
             foreach (Subject _subject in _subjects) {
                 _response.Add(new NetSubjectResponse(
                     _subject.id_subject.ToString(), 
-                    _subject.name));
+                    _subject.name,
+                    _subject.gradeAverage.ToString("0.0")));
             }
 
             return Ok(JsonSerializer.Serialize(_response));
@@ -51,10 +52,12 @@ namespace BeneNotenrechner.Controllers
     {
         [Required] public string Id { get; }
         [Required] public string Name { get; }
+        [Required] public string Average { get; }
 
-        public NetSubjectResponse(string id, string name) {
+        public NetSubjectResponse(string id, string name, string average) {
             Id = id;
             Name = name;
+            Average = average;
         }
     }
 }

@@ -34,6 +34,8 @@ namespace BeneNotenrechner.Controllers {
 
             _grade.Update(_request.Grade_Name, _request.Grade_Grade, _request.Grade_Evaluation , _request.Grade_Date);
 
+            _subject.EvaluateAverage();
+
             return Ok();
         }
     }

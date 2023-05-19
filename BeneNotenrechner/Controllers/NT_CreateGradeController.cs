@@ -28,6 +28,7 @@ namespace BeneNotenrechner.Controllers
             if (_subject == null) return BadRequest(JsonSerializer.Serialize(new NetError("Could not resolve Subject!")));
 
             _subject.CreateGrade(_request.Grade_Name, _request.Grade_Grade, _request.Grade_Evaluation, _request.Grade_Date);
+            _subject.EvaluateAverage();
 
             return Ok();
         }

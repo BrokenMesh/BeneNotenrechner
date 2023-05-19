@@ -79,6 +79,7 @@ namespace BeneNotenrechner.Backend
         public int id_subject;
         public int id_supersubject;
         public string name;
+        public float gradeAverage;
 
         public List<Grade> grades;
 
@@ -124,6 +125,23 @@ namespace BeneNotenrechner.Backend
             DBManager.instance.CreateGrade(this, _grade, _evaluation, _date, _gradeName);
             grades = DBManager.instance.GetGradeAll(this);
         }
+
+        public void EvaluateAverage() {
+            float _totalEval = 0;
+            float _total = 0;
+
+            for (int i = 0; i < grades.Count; i++) {
+                _totalEval += grades[i].evaluation;
+            }
+
+            for (int i = 0; i < grades.Count; i++) {
+                float _weight = grades[i].evaluation / _totalEval;
+                _total += grades[i].grade * _weight;
+            }
+
+            gradeAverage = _total;
+        }
+
     }
 
     public class Grade

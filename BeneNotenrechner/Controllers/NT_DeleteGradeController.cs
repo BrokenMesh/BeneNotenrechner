@@ -36,6 +36,8 @@ namespace BeneNotenrechner.Controllers {
             _grade.Delete();
             _subject.grades.Remove(_grade);
 
+            _subject.EvaluateAverage();
+
             return Ok();
         }
     }

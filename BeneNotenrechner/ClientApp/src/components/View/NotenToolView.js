@@ -93,7 +93,7 @@ export class NotenToolView extends Component {
                 {
                     superSubjects.map((superSubject) => {
                         return (
-                            <SuperSubject name={superSubject.Name} id={superSubject.Id} key={superSubject.Id} parent={this} />
+                            <SuperSubject name={superSubject.Name} average={superSubject.Average} id={superSubject.Id} key={superSubject.Id} parent={this} />
                         )
                     })
                 }

@@ -134,6 +134,7 @@ namespace BeneNotenrechner.Backend
             if (_resolveChildren) {
                 foreach (SuperSubject _superSubject in _superSubjects) {
                     _superSubject.subjects = GetSubjectAll(_superSubject, true);
+                    _superSubject.EvaluateAverage();
                 }
             }
 

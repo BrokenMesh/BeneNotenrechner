@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `benenotenrechner_db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `benenotenrechner_db`;
--- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
 --
 -- Host: localhost    Database: benenotenrechner_db
 -- ------------------------------------------------------
--- Server version	8.0.32
+-- Server version	8.0.31
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -34,7 +34,7 @@ CREATE TABLE `tbl_grade` (
   PRIMARY KEY (`grade_id`),
   KEY `fk_grade_idx` (`id_subject`),
   CONSTRAINT `fk_grade` FOREIGN KEY (`id_subject`) REFERENCES `tbl_subject` (`subject_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=143 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `tbl_grade` (
 
 LOCK TABLES `tbl_grade` WRITE;
 /*!40000 ALTER TABLE `tbl_grade` DISABLE KEYS */;
-INSERT INTO `tbl_grade` VALUES (56,5.5,'2023-05-19 00:00:00','ZP1',2,6),(57,5,'2023-05-06 20:20:39','ZP2',1,6),(58,4.5,'2023-05-06 20:20:39','ZP3',1,6),(59,3.5,'2023-05-06 20:20:39','ZP4',1,6),(60,1,'2023-05-06 20:20:39','ZP5',1,6),(101,5.5,'2023-05-06 20:21:37','ZP1',1,6),(102,5,'2023-05-06 20:21:37','ZP2',1,6),(103,4.5,'2023-05-06 20:21:37','ZP3',1,6),(104,3.5,'2023-05-06 20:21:37','ZP4',1,6),(105,1,'2023-05-06 20:21:37','ZP5',1,6),(139,5,'2023-05-14 00:00:00','1ZP',1,14),(141,6,'2023-05-14 00:00:00','1ZP',1,21),(142,6,'2023-05-19 00:00:00','1ZP',2,18);
+INSERT INTO `tbl_grade` VALUES (56,6,'2023-05-26 00:00:00','1ZP',1,6),(139,5,'2023-05-14 00:00:00','1ZP',1,14),(141,6,'2023-05-14 00:00:00','1ZP',1,21),(143,5.3,'2023-05-26 00:00:00','1ZP',1,16),(154,5.6,'2023-05-26 00:00:00','1ZP',1,19),(156,5.7,'2023-05-26 00:00:00','1ZP',1,20),(159,6,'2023-05-26 00:00:00','1ZP',1,18),(160,5.3,'2023-05-26 00:00:00','2ZP',1,18),(161,5.5,'2023-05-26 00:00:00','3ZP',1,18),(162,6,'2023-05-26 00:00:00','2ZP',1,19),(163,4.9,'2023-05-26 00:00:00','3ZP',1,19),(164,4.8,'2023-05-26 00:00:00','2ZP',1,20),(165,5.8,'2023-05-26 00:00:00','3ZP',1,20),(166,5.2,'2023-05-26 00:00:00','1ZP',1,22),(167,5.7,'2023-05-26 00:00:00','2ZP',1,22),(168,6,'2023-05-26 00:00:00','3ZP',1,22),(169,5.5,'2023-05-26 00:00:00','1ZP',1,17),(170,5,'2023-05-26 00:00:00','2ZP',1,17);
 /*!40000 ALTER TABLE `tbl_grade` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -61,7 +61,7 @@ CREATE TABLE `tbl_profile` (
   PRIMARY KEY (`profile_id`),
   KEY `id_user_idx` (`id_users`),
   CONSTRAINT `id_user` FOREIGN KEY (`id_users`) REFERENCES `tbl_users` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +70,7 @@ CREATE TABLE `tbl_profile` (
 
 LOCK TABLES `tbl_profile` WRITE;
 /*!40000 ALTER TABLE `tbl_profile` DISABLE KEYS */;
-INSERT INTO `tbl_profile` VALUES (1,1,3),(2,1,6);
+INSERT INTO `tbl_profile` VALUES (1,1,3),(2,1,6),(3,1,7);
 /*!40000 ALTER TABLE `tbl_profile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -88,7 +88,7 @@ CREATE TABLE `tbl_subject` (
   PRIMARY KEY (`subject_id`),
   KEY `fk_subject_idx` (`id_supersubject`),
   CONSTRAINT `fk_subject` FOREIGN KEY (`id_supersubject`) REFERENCES `tbl_supersubject` (`supersubject_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,7 +97,7 @@ CREATE TABLE `tbl_subject` (
 
 LOCK TABLES `tbl_subject` WRITE;
 /*!40000 ALTER TABLE `tbl_subject` DISABLE KEYS */;
-INSERT INTO `tbl_subject` VALUES (6,'M320',1),(14,'ABU',3),(16,'MAT',2),(17,'ENG',2),(18,'M117',1),(19,'M122',1),(20,'M239',1),(21,'ABU2',8);
+INSERT INTO `tbl_subject` VALUES (6,'M320',1),(14,'ABU',3),(16,'MAT',2),(17,'ENG',2),(18,'M117',1),(19,'M122',1),(20,'M293',1),(21,'ABU2',8),(22,'M164',1);
 /*!40000 ALTER TABLE `tbl_subject` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -140,7 +140,7 @@ CREATE TABLE `tbl_users` (
   `username` varchar(45) NOT NULL,
   `password` varchar(256) NOT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -149,7 +149,7 @@ CREATE TABLE `tbl_users` (
 
 LOCK TABLES `tbl_users` WRITE;
 /*!40000 ALTER TABLE `tbl_users` DISABLE KEYS */;
-INSERT INTO `tbl_users` VALUES (2,'Hicham','7214f780d3d36bab4b03bdf3ed67b0df7b7b707a506566f765772a242ffefe31'),(3,'BrokenMesh','7214f780d3d36bab4b03bdf3ed67b0df7b7b707a506566f765772a242ffefe31'),(4,'User','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4'),(6,'asd','688787d8ff144c502c7f5cffaafe2cc588d86079f9de88304c26b0cb99ce91c6');
+INSERT INTO `tbl_users` VALUES (2,'Hicham','7214f780d3d36bab4b03bdf3ed67b0df7b7b707a506566f765772a242ffefe31'),(3,'BrokenMesh','7214f780d3d36bab4b03bdf3ed67b0df7b7b707a506566f765772a242ffefe31'),(4,'User','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4'),(6,'asd','688787d8ff144c502c7f5cffaafe2cc588d86079f9de88304c26b0cb99ce91c6'),(7,'User2','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4');
 /*!40000 ALTER TABLE `tbl_users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -162,4 +162,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-19 17:06:40
+-- Dump completed on 2023-05-26  9:45:18

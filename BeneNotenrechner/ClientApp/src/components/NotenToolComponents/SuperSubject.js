@@ -173,6 +173,7 @@ export class SuperSubject extends Component {
 
     reload(context) {
         this.populateData(context, this.props.id);
+        this.props.parent.reload(context);
     }
 
     render() {
@@ -238,7 +239,7 @@ export class SuperSubject extends Component {
                                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => this.resetEditSuperSubject() }>Abbrechen</button>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>3e
                                 </div>
                             </div>
                         )
@@ -263,7 +264,7 @@ export class SuperSubject extends Component {
                             <div className="p-2 flex-shrink-1 d-flex gap-3 border-start">
                                 <div style={{ width: 70 }} className="p-2">
                                     <div className="row p-1"><div className="btn btn-white" disabled>Schnit</div></div>
-                                    <div className="row p-1"><b className="text-center border rounded p-1">5.5</b></div>
+                                    <div className="row p-1"><b className="text-center border rounded p-1"> { this.props.average } </b></div>
                                 </div>
                             </div>
 

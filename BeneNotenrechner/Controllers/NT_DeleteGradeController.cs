@@ -38,6 +38,8 @@ namespace BeneNotenrechner.Controllers {
 
             _subject.EvaluateAverage();
 
+            _superSubject.EvaluateAverage();
+
             return Ok();
         }
     }

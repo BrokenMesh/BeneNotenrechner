@@ -37,6 +37,7 @@ namespace BeneNotenrechner.Backend
         public int id_supersubject;
         public int id_profile;
         public string name;
+        public float subjectAverage;
 
         public List<Subject> subjects;
 
@@ -71,6 +72,19 @@ namespace BeneNotenrechner.Backend
                 _subject.Delete();
             }
             DBManager.instance.DeleteSuperSubject(this);
+        }
+
+        public void EvaluateAverage() {
+            float _total = 0;
+            float _count = 0;
+
+            foreach (Subject _s in subjects) {
+                if (_s.gradeAverage == 0f) continue;
+                _total += _s.gradeAverage;
+                _count++;
+            }
+
+            subjectAverage = _total / _count;
         }
     }
 
@@ -121,6 +135,8 @@ namespace BeneNotenrechner.Backend
             if (!float.TryParse(_strGrade, out _grade)) return;
             if (!float.TryParse(_strEvaluation, out _evaluation)) return;
             if (!DateTime.TryParse(_strDate, out _date)) return;
+
+            _grade = Math.Clamp(_grade, 1, 6);
 
             DBManager.instance.CreateGrade(this, _grade, _evaluation, _date, _gradeName);
             grades = DBManager.instance.GetGradeAll(this);

@@ -178,6 +178,7 @@ export class Subject extends Component {
     }
 
     reload(context) {
+        this.populateData(context, this.props.id, this.props.supersubject_id);
         this.props.parent.reload(context);
     }
 

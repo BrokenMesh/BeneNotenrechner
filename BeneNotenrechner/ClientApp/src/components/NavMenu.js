@@ -14,9 +14,6 @@ export class NavMenu extends Component {
                             <NavLink tag={Link} className="text-black" to="/NotenTool">NotenTool</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink tag={Link} className="text-black" to="/AbsenzenTool">AbsenzenTool</NavLink>
-                        </NavItem>
-                        <NavItem>
                             <NavLink tag={Link} className="text-secondary" to="/" reloadDocument>Abmelden</NavLink>
                         </NavItem>
                     </div>

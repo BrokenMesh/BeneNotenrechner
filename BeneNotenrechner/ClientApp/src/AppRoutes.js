@@ -11,10 +11,6 @@ const AppRoutes = [
         path: '/NotenTool',
         element: <NotenToolView />
     },
-    {
-        path: '/AbsenzenTool',
-        element: <AbsenzenToolView />
-    },
 ];
 
 export default AppRoutes;

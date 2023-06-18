@@ -25,7 +25,7 @@ namespace BeneNotenrechner.Controllers {
             if (_superSubject == null)
                 return BadRequest(JsonSerializer.Serialize(new NetError("Could not resolve SuperSubject!")));
 
-            _superSubject.CreateSubject(_request.Name);
+            _superSubject.CreateSubject(_request.Name, _user);
 
             return Ok();
         }

@@ -32,7 +32,7 @@ namespace BeneNotenrechner.Controllers {
             if (_grade == null)
                 return BadRequest(JsonSerializer.Serialize(new NetError("Could not resolve grade!")));
 
-            _grade.Update(_request.Grade_Name, _request.Grade_Grade, _request.Grade_Evaluation , _request.Grade_Date);
+            _grade.Update(_request.Grade_Name, _request.Grade_Grade, _request.Grade_Evaluation , _request.Grade_Date, _user);
 
             _subject.EvaluateAverage();
 

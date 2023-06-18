@@ -23,11 +23,12 @@ export class LoginView extends Component {
     handleSubmit(event, context) {
         const submitUserData = async () => {
             const password_hash = sha256(this.state.password);
-
+            const salt_hash = sha256("A" + this.state.password);
 
             const data = {
                 username: this.state.username,
-                password: password_hash
+                password: password_hash,
+                salt: salt_hash
             } 
 
             console.log(data);

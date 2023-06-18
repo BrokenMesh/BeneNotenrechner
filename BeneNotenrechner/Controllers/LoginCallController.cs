@@ -11,7 +11,7 @@ namespace BeneNotenrechner.Controllers
     {
         [HttpPost]
         public IActionResult Post(NetUser _value) {
-            Tuple<string, string> _result = UserManager.LoginUser(_value.Username, _value.Password);
+            Tuple<string, string> _result = UserManager.LoginUser(_value.Username, _value.Password, _value.Salt);
 
             NetToken _token = new NetToken(_result.Item1, _result.Item2);
             string _response = JsonSerializer.Serialize(_token);
@@ -22,10 +22,12 @@ namespace BeneNotenrechner.Controllers
     public class NetUser {
         [Required] public string Username { get; }
         [Required] public string Password { get; }
+        [Required] public string Salt { get; }
 
-        public NetUser(string username, string password) {
+        public NetUser(string username, string password, string salt) {
             Username = username;
             Password = password;
+            Salt = salt;
         }
     }
 

@@ -23,7 +23,7 @@ namespace BeneNotenrechner.Controllers
             if (_profile == null)
                 return BadRequest(JsonSerializer.Serialize(new NetError("Could not resolve Profile!")));
 
-            _profile.CreateSuperSubject(_request.Name);
+            _profile.CreateSuperSubject(_request.Name, _user);
 
             return Ok();
         }

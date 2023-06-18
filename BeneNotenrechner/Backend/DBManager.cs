@@ -82,14 +82,14 @@ namespace BeneNotenrechner.Backend
         #endregion USER
 
         #region PROFILE_GETTERS
-        public Profile? GetProfile(int _id_user, bool _resolveChildren) {
+        public Profile? GetProfile(User _user, bool _resolveChildren) {
             OpenStream();
 
             int _id_profile = -1;
 
             string _sql = "SELECT profile_id FROM tbl_profile WHERE id_users = @id_user";
             using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
-                _command.Parameters.AddWithValue("@id_user", _id_user);
+                _command.Parameters.AddWithValue("@id_user", _user.Id);
 
                 using (MySqlDataReader _reader = _command.ExecuteReader()) {
                     while (_reader.Read()) {
@@ -99,16 +99,16 @@ namespace BeneNotenrechner.Backend
             }
             CloseStream();
 
-            Profile _profile = new Profile(_id_profile, _id_user);
+            Profile _profile = new Profile(_id_profile, _user.Id);
 
             if (_resolveChildren) {
-                _profile.superSubjects = GetSuperSubjectAll(_profile, true);
+                _profile.superSubjects = GetSuperSubjectAll(_profile, _user, true);
             }
 
             return _profile;
         }
 
-        public List<SuperSubject> GetSuperSubjectAll(Profile _profile, bool _resolveChildren) {
+        public List<SuperSubject> GetSuperSubjectAll(Profile _profile, User _user, bool _resolveChildren) {
             OpenStream();
 
             List<SuperSubject> _superSubjects = new List<SuperSubject>();
@@ -133,7 +133,7 @@ namespace BeneNotenrechner.Backend
 
             if (_resolveChildren) {
                 foreach (SuperSubject _superSubject in _superSubjects) {
-                    _superSubject.subjects = GetSubjectAll(_superSubject, true);
+                    _superSubject.subjects = GetSubjectAll(_superSubject, _user, true);
                     _superSubject.EvaluateAverage();
                 }
             }
@@ -141,7 +141,7 @@ namespace BeneNotenrechner.Backend
             return _superSubjects;
         }
 
-        public List<Subject> GetSubjectAll(SuperSubject _superSubject, bool _resolveChildren) {
+        public List<Subject> GetSubjectAll(SuperSubject _superSubject, User _user, bool _resolveChildren) {
             OpenStream();
 
             List<Subject> _subjects = new List<Subject>();
@@ -165,7 +165,7 @@ namespace BeneNotenrechner.Backend
 
             if (_resolveChildren) {
                 foreach (Subject _subject in _subjects) {
-                    _subject.grades = GetGradeAll(_subject);
+                    _subject.grades = GetGradeAll(_subject, _user);
                     _subject.EvaluateAverage();
                 }
             }
@@ -173,7 +173,7 @@ namespace BeneNotenrechner.Backend
             return _subjects;
         }
 
-        public List<Grade> GetGradeAll(Subject _subject) {
+        public List<Grade> GetGradeAll(Subject _subject, User _user) {
             OpenStream();
 
             List<Grade> _grades = new List<Grade>();
@@ -206,18 +206,18 @@ namespace BeneNotenrechner.Backend
         #endregion PROFILE_GETTERS
 
         #region PROFILE_CREATION
-        public Profile? CreateProfile(int _user_id, int _index) {
+        public Profile? CreateProfile(User _user, int _index) {
             OpenStream();
 
             string _sql = "INSERT INTO `benenotenrechner_db`.`tbl_profile` (`index`, `id_users`) VALUES (@index, @id_users);";
             using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
                 _command.Parameters.AddWithValue("@index", _index);
-                _command.Parameters.AddWithValue("@id_users", _user_id);
+                _command.Parameters.AddWithValue("@id_users", _user.Id);
                 _command.ExecuteNonQuery();
             }
 
             CloseStream();
-            return GetProfile(_user_id, false);
+            return GetProfile(_user, false);
         }
 
         public void CreateSuperSubject(Profile _profile, string _name) {
@@ -246,7 +246,7 @@ namespace BeneNotenrechner.Backend
             CloseStream();
         }
 
-        public void CreateGrade(Subject _subject, float _grade, float _evaluation, DateTime _date, string _name) {
+        public void CreateGrade(Subject _subject, float _grade, float _evaluation, DateTime _date, string _name, User _user) {
             OpenStream();
 
             string _sql = "INSERT INTO `benenotenrechner_db`.`tbl_grade` (`grade`, `date`, `name`, `evaluation`, `id_subject`) VALUES ( @grade, @date, @name, @evaluation, @id_subject); ";
@@ -292,7 +292,7 @@ namespace BeneNotenrechner.Backend
             CloseStream();
         }
 
-        public void UpdateGrade(Grade _grade) {
+        public void UpdateGrade(Grade _grade, User _user) {
             OpenStream();
 
             string _sql = "UPDATE `benenotenrechner_db`.`tbl_grade` SET `grade` = @grade, `date` = @date, `name` = @name, `evaluation` = @evaluation WHERE `grade_id` = @grade_id;";

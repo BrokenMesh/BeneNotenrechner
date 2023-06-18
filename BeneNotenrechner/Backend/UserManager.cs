@@ -1,8 +1,10 @@
-﻿namespace BeneNotenrechner.Backend
+﻿using Org.BouncyCastle.Bcpg.OpenPgp;
+
+namespace BeneNotenrechner.Backend
 {
     public class UserManager
     {
-        private static Dictionary<uint, User> userlist = new Dictionary<uint, User>();
+        private static Dictionary<string, User> userlist = new Dictionary<string, User>();
         private static Random random = new Random();
 
         private static Timer timer;
@@ -16,8 +18,10 @@
             }, null, 0, OutdatedUsersCheckPeriod_mil);
         }
 
-        public static Tuple<string, string> LoginUser(string _username, string _password) {
-            
+        public static Tuple<string, string> LoginUser(string _username, string _password, string _salt) {
+
+            bool _isNewUser = false;
+
             // Validation
             if (_username.Length > 45) return new Tuple<string, string>("", "Error: username is to long");
 
@@ -25,7 +29,7 @@
 
             if (_userid == -1) {
                 _userid = DBManager.instance.CreateUser(_username, _password);
-                DBManager.instance.CreateProfile(_userid, 1);
+                _isNewUser = true;
                 if (_userid == -1) return new Tuple<string, string>("", "Error: could not create new user");
             }
 
@@ -40,13 +44,17 @@
             }
 
             // Generate session token for authentication 
-            uint _token = (uint)random.Next(1_000_000_000, int.MaxValue);
+            string _token = EncriptionManager.GenRandomString(64);
 
             while(userlist.ContainsKey(_token)) {
-                _token = (uint)random.Next(1_000_000_000, int.MaxValue);
+                _token = EncriptionManager.GenRandomString(64);
             }
 
-            userlist.Add(_token, new User(_userid, _username));
+            userlist.Add(_token, new User(_userid, _username, _password, _salt));
+
+            if (_isNewUser) {
+                DBManager.instance.CreateProfile(userlist[_token], 1);
+            }
 
             Console.Write("> ");
             foreach (User _user in userlist.Values) 
@@ -57,32 +65,30 @@
         }
 
         private static void CheckForOutdatedUsers() {
-            List<uint> _usersToDelete = new List<uint>();
+            List<string> _usersToDelete = new List<string>();
 
-            foreach (uint _userId in userlist.Keys) {
+            foreach (string _userId in userlist.Keys) {
                 if (userlist[_userId].LastAuthentication.AddMinutes(MaxOutdatedTime_min) < DateTime.Now) {
                     _usersToDelete.Add(_userId);
                 }
             }
 
-            foreach (uint _userId in _usersToDelete) {
+            foreach (string _userId in _usersToDelete) {
                 Console.WriteLine($"Removed {userlist[_userId].Username} from Users list");
                 userlist.Remove(_userId);
             }
         }
 
-        public static void ReauthenticateUser(string _strToken) {
-            uint _token;
-
-            if (!uint.TryParse(_strToken, out _token)) return;
+        public static void ReauthenticateUser(string _token) {
+            if (string.IsNullOrEmpty(_token)) return;
                
             if(userlist.ContainsKey(_token)) {
                 userlist[_token].SetAutenticationToNow();
             }
         }
 
-        public static User? GetUserFromToken(string _strToken) {
-            if (uint.TryParse(_strToken, out uint _token)) {
+        public static User? GetUserFromToken(string _token) {
+            if (!string.IsNullOrEmpty(_token)) {
                 if (userlist.ContainsKey(_token)) {
                     return userlist[_token];
                 }

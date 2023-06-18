@@ -26,9 +26,9 @@ namespace BeneNotenrechner.Backend
             return null;
         }
 
-        public void CreateSuperSubject(string _name) {
+        public void CreateSuperSubject(string _name, User _user) {
             DBManager.instance.CreateSuperSubject(this, _name);
-            superSubjects = DBManager.instance.GetSuperSubjectAll(this, true);
+            superSubjects = DBManager.instance.GetSuperSubjectAll(this, _user, true);
         }
     }
 
@@ -57,9 +57,9 @@ namespace BeneNotenrechner.Backend
             return null;
         }
 
-        public void CreateSubject(string _name) {
+        public void CreateSubject(string _name, User _user) {
             DBManager.instance.CreateSubject(this, _name);
-            subjects = DBManager.instance.GetSubjectAll(this, true);
+            subjects = DBManager.instance.GetSubjectAll(this, _user, true);
         }
 
         public void Update(string _name) {
@@ -127,7 +127,7 @@ namespace BeneNotenrechner.Backend
             DBManager.instance.DeleteSubject(this);
         }
         
-        public void CreateGrade(string _gradeName, string _strGrade, string _strEvaluation, string _strDate) {
+        public void CreateGrade(string _gradeName, string _strGrade, string _strEvaluation, string _strDate, User _user) {
             float _grade;
             float _evaluation;
             DateTime _date;
@@ -138,8 +138,8 @@ namespace BeneNotenrechner.Backend
 
             _grade = Math.Clamp(_grade, 1, 6);
 
-            DBManager.instance.CreateGrade(this, _grade, _evaluation, _date, _gradeName);
-            grades = DBManager.instance.GetGradeAll(this);
+            DBManager.instance.CreateGrade(this, _grade, _evaluation, _date, _gradeName, _user);
+            grades = DBManager.instance.GetGradeAll(this, _user);
         }
 
         public void EvaluateAverage() {
@@ -178,7 +178,7 @@ namespace BeneNotenrechner.Backend
             this.id_subject = id_subject;
         }
 
-        public void Update(string _name, string _strGrade, string _strEvaluation, string _strDate) {
+        public void Update(string _name, string _strGrade, string _strEvaluation, string _strDate, User _user) {
             float _grade;
             float _evaluation;
             DateTime _date;
@@ -192,7 +192,7 @@ namespace BeneNotenrechner.Backend
             evaluation = _evaluation;
             date = _date;
 
-            DBManager.instance.UpdateGrade(this);
+            DBManager.instance.UpdateGrade(this, _user);
         }
 
         public void Delete() {

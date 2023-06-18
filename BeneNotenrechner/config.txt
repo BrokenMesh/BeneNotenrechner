@@ -1,0 +1,1 @@
+{"DB_Server":"localhost","DB_User":"Hicham","DB_Password":"Hallosaid1","DB_Database":"benenotenrechner_db"}

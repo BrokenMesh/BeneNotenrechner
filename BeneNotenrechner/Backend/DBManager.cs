@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic;
+﻿using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.VisualBasic;
 using MySql.Data.MySqlClient;
 using System.Xml.Linq;
 
@@ -14,6 +15,16 @@ namespace BeneNotenrechner.Backend
             instance = this;
 
             string _constr = $"server={_server};userid={_userid};password={_password};database={_database};";
+            db = new MySqlConnection(_constr);
+            db.Open();
+
+            Console.WriteLine($"MySql version: {db.ServerVersion}");
+        }
+
+        public DBManager(Config _config) {
+            instance = this;
+
+            string _constr = $"server={_config.DB_Server};userid={_config.DB_User};password={_config.DB_Password};database={_config.DB_Database};";
             db = new MySqlConnection(_constr);
             db.Open();
 

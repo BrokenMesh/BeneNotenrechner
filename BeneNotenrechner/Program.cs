@@ -31,8 +31,11 @@ namespace BeneNotenrechner {
             app.MapFallbackToFile("index.html");
             ;
 
+            // Load Config
+            Config _config = ConfigLoader.LoadConfig("./config.txt");
+
             // DB
-            DBManager db = new DBManager("localhost", "Hicham", "Hallosaid1", "benenotenrechner_db");
+            DBManager db = new DBManager(_config);
             UserManager.Start();
 
             app.Run();

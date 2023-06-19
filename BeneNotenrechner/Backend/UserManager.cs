@@ -27,7 +27,7 @@ namespace BeneNotenrechner.Backend
 
             int _userid = DBManager.instance.GetUser(_username);
 
-            if (_userid == -1) {
+            if (_userid == -1) { // TODO: New Users are created here, this must be moved!
                 _userid = DBManager.instance.CreateUser(_username, _password);
                 _isNewUser = true;
                 if (_userid == -1) return new Tuple<string, string>("", "Error: could not create new user");

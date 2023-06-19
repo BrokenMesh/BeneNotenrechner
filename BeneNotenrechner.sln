@@ -5,7 +5,9 @@ VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeneNotenrechner", "BeneNotenrechner\BeneNotenrechner.csproj", "{643E1AEB-4303-4F81-B11D-E736E46CE287}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureTest", "FeatureTest\FeatureTest.csproj", "{1BD69D5E-EAA9-4380-80D5-DC78FFD7534A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureTest", "FeatureTest\FeatureTest.csproj", "{1BD69D5E-EAA9-4380-80D5-DC78FFD7534A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeneNotenrechner.nUnitTests", "BeneNotenrechner.nUnitTests\BeneNotenrechner.nUnitTests.csproj", "{6561C9B8-C725-467D-8143-E3B5810563BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{1BD69D5E-EAA9-4380-80D5-DC78FFD7534A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BD69D5E-EAA9-4380-80D5-DC78FFD7534A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BD69D5E-EAA9-4380-80D5-DC78FFD7534A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6561C9B8-C725-467D-8143-E3B5810563BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6561C9B8-C725-467D-8143-E3B5810563BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6561C9B8-C725-467D-8143-E3B5810563BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6561C9B8-C725-467D-8143-E3B5810563BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

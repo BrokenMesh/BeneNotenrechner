@@ -19,8 +19,7 @@
             SetAutenticationToNow();
         }
         
-        public void SetAutenticationToNow()
-        {
+        public void SetAutenticationToNow() {
             LastAuthentication = DateTime.Now;
         }
 

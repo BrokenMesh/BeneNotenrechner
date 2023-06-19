@@ -1,5 +1,4 @@
 ﻿using System.Security.Cryptography;
-using System.Text;
 
 namespace BeneNotenrechner.Backend
 {
@@ -22,11 +21,11 @@ namespace BeneNotenrechner.Backend
             return _output;
         }
 
-        public static bool EncripFloat(float _value, User _user, out byte[] _result) {
+        public static bool EncripFloat(float _value, User _user, out string _result) {
             return EncripString(_value.ToString(), _user, out _result);
         }
 
-        public static bool DecripFloat(byte[] _value, User _user, out float _result) {
+        public static bool DecripFloat(string _value, User _user, out float _result) {
             if (DecripString(_value, _user, out string _strResult)) {
                 if (float.TryParse(_strResult, out _result)) {
                     return true;
@@ -37,26 +36,13 @@ namespace BeneNotenrechner.Backend
             return false;
         }
 
-        public static bool EncripString(string _value, User _user, out byte[] _result) {
+        public static bool EncripString(string _value, User _user, out string _result) {
             byte[] _key = ConvertToKey(_user.Password, _user.Salt, globalKey);
-            byte[] _iv = Encoding.ASCII.GetBytes(_user.Salt, 0, 16);
+            byte[] _iv = ByteArrayFromString(_user.Salt.Substring(0, 16));
 
             try {
-                _result = EncryptStringToBytes_Aes(_value, _key, _iv);
-                return true;
-            }
-            catch (Exception) {
-                _result = new byte[0];
-                return false;
-            }
-        }
-
-        public static bool DecripString(byte[] _value, User _user, out string _result) {
-            byte[] _key = ConvertToKey(_user.Password, _user.Salt, globalKey);
-            byte[] _iv = Encoding.ASCII.GetBytes(_user.Salt, 0, 16);
-
-            try {
-                _result = DecryptStringFromBytes_Aes(_value, _key, _iv);
+                byte[] _encResult = EncryptStringToBytes_Aes(_value, _key, _iv);
+                _result = StringFromByteArray(_encResult);
                 return true;
             }
             catch (Exception) {
@@ -65,16 +51,50 @@ namespace BeneNotenrechner.Backend
             }
         }
 
+        public static bool DecripString(string _value, User _user, out string _result) {
+            byte[] _key = ConvertToKey(_user.Password, _user.Salt, globalKey);
+            byte[] _iv = ByteArrayFromString(_user.Salt.Substring(0, 16));
+
+            try {
+                byte[] _encValue = ByteArrayFromString(_value);
+               _result = DecryptStringFromBytes_Aes(_encValue, _key, _iv);
+                return true;
+            }
+            catch (Exception) {
+                _result = "";
+                return false;
+            }
+        }
 
         private static byte[] ConvertToKey(string _password, string _salt, string _globalKey) {
             byte[] _key;
 
             using (SHA256 _sha = SHA256.Create()) {
-                byte[] _rawKey = Encoding.ASCII.GetBytes(_password + _globalKey + _salt);
+                byte[] _rawKey = ByteArrayFromString(_password + _globalKey + _salt);
                 _key = _sha.ComputeHash(_rawKey);
             }
 
             return _key;
+        }
+
+        private static byte[] ByteArrayFromString(string _str) {
+            byte[] _output = new byte[_str.Length];
+
+            for (int i = 0; i < _str.Length; i++) {
+                _output[i] = (byte)_str[i];
+            }
+
+            return _output;
+        }
+
+        private static string StringFromByteArray(byte[] _bytes) {
+            string _output = "";
+
+            for (int i = 0; i < _bytes.Length; i++) {
+                _output += (char)_bytes[i];
+            }
+
+            return _output;
         }
 
         private static byte[] EncryptStringToBytes_Aes(string _value, byte[] _key, byte[] _iv) {

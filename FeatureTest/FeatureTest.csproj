@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="MySql.Data" Version="8.0.33" />
+    <PackageReference Include="RestSharp" Version="110.2.0" />
   </ItemGroup>
 
 </Project>

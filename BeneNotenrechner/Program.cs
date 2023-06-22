@@ -35,7 +35,10 @@ namespace BeneNotenrechner {
 
             // DB
             DBManager db = new DBManager(_config);
+            MailManager mm = new MailManager(_config);
             UserManager.Start();
+
+            mm.SendTokenMail("elkordhicham@gmail.com", "123654");
 
             app.Run();
         }

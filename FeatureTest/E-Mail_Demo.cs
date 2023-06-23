@@ -7,8 +7,7 @@ using RestSharp;
 using RestSharp.Authenticators;
 
 namespace FeatureTest {
-    public class E_Mail_Demo 
-    {
+    public class E_Mail_Demo {
         private static Random random = new Random();
         private static SmtpClient smtpClient;
 

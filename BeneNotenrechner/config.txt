@@ -1,1 +1,1 @@
-{"DB_Server":"localhost","DB_User":"Hicham","DB_Password":"Hallosaid1","DB_Database":"benenotenrechner_db","MAIL_SMTPServer":"smtp.gamil.com","MAIL_HostMail":"elkordhicham55demo@gmail.com","MAIL_HostPassword":"evhqqxffufyogqqp","MAIL_HTMLPath":"./TokenEMail.html"}
+{"DB_Server":"localhost","DB_User":"Hicham","DB_Password":"Hallosaid1","DB_Database":"benenotenrechner_db"}

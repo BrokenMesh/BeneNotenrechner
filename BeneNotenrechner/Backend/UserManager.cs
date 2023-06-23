@@ -20,6 +20,8 @@ namespace BeneNotenrechner.Backend
 
         public static Tuple<string, string> LoginUser(string _username, string _password, string _salt) {
 
+            EMailManager.TestAPI();
+
             bool _isNewUser = false;
 
             // Validation

@@ -1,10 +1,12 @@
 ﻿using Org.BouncyCastle.Bcpg.OpenPgp;
+using System.Net.Mail;
 
 namespace BeneNotenrechner.Backend
 {
     public class UserManager
     {
         private static Dictionary<string, User> userlist = new Dictionary<string, User>();
+        private static Dictionary<string, TempUser> tempUserlist = new Dictionary<string, TempUser>();
         private static Random random = new Random();
 
         private static Timer timer;
@@ -22,18 +24,9 @@ namespace BeneNotenrechner.Backend
 
             EMailManager.instance.SendTokenMail("elkordhicham@gmail.com", "this is a token");
 
-            bool _isNewUser = false;
-
-            // Validation
-            if (_username.Length > 45) return new Tuple<string, string>("", "Error: username is to long");
-
             int _userid = DBManager.instance.GetUser(_username);
 
-            if (_userid == -1) { // TODO: New Users are created here, this must be moved!
-                _userid = DBManager.instance.CreateUser(_username, _password);
-                _isNewUser = true;
-                if (_userid == -1) return new Tuple<string, string>("", "Error: could not create new user");
-            }
+            if (_userid == -1) return new Tuple<string, string>("", "Nutzer konnte nicht gefunden werden!");
 
             if (!DBManager.instance.CheckPassword(_userid, _password)) return new Tuple<string, string>("", "Password ist incorrect!");
 
@@ -54,16 +47,38 @@ namespace BeneNotenrechner.Backend
 
             userlist.Add(_token, new User(_userid, _username, _password, _salt));
 
-            if (_isNewUser) {
-                DBManager.instance.CreateProfile(userlist[_token], 1);
-            }
-
             Console.Write("> ");
             foreach (User _user in userlist.Values) 
                 Console.Write($"{_user.Username}, ");
             Console.WriteLine();
 
             return new Tuple<string, string>(_token.ToString(), "");
+        }
+
+        // Create temporary user for registration
+        public static string CreateTempUser(string _username, string _password, string _usermail) {
+            if (DBManager.instance.GetUser(_username) != -1) return "Username wird schon verwendet!";
+            if (_username.Length > 45) return "Error: username is to long";
+            if (!ValidateMail(_usermail)) return "E-Mail Adresse ist nicht valid!";
+
+            string _validationToken = EncriptionManager.GenRandomString(8).ToUpper();
+
+            tempUserlist.Add(_validationToken, new TempUser(_username, _password, _usermail));
+
+            return "";
+        }
+
+        private static bool ValidateMail(string _mail) {
+            var valid = true;
+
+            try {
+                var emailAddress = new MailAddress(_mail);
+            }
+            catch {
+                valid = false;
+            }
+
+            return valid;
         }
 
         private static void CheckForOutdatedUsers() {

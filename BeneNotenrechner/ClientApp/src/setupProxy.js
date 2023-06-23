@@ -7,6 +7,7 @@ const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_H
 const context =  [
     "/logincall",
     "/reauthenticate",
+    "/registercall",
 
     "/nt/nt_supersubject",
     "/nt/nt_createsupersubject", 

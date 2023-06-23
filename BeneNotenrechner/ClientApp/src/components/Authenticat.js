@@ -1,10 +1,19 @@
 ﻿import React, { Component } from 'react';
 import { MContext } from './StateProvider';
 import { LoginView } from './View/LoginView';
+import { RegisterView } from './View/RegisterView';
 import { useEffect } from 'react';
 
 export class Authenticat extends Component {
     static displayName = Authenticat.name;
+
+    constructor(props) {
+        super(props);
+
+        this.state = { isRegister: false };
+
+        this.SetisRegister = this.SetIsRegister.bind(this);
+    }
 
     Reauthenticate(context) {
         const submitReauthenticate = async() => {
@@ -28,6 +37,10 @@ export class Authenticat extends Component {
         }
     }
 
+    SetIsRegister(_value) {
+        this.setState({ isRegister: _value});
+    }
+
     render() {
         let page = this.props.children;
 
@@ -42,7 +55,10 @@ export class Authenticat extends Component {
                         if (context.state.isAuthenticated) {
                             return page;
                         } else {
-                            return (<LoginView></LoginView>)
+
+                            let loginview = this.state.isRegister ? <RegisterView parent={this}></RegisterView> : <LoginView parent={this}></LoginView>;
+
+                            return (loginview)
                         }
                     }}
                 </MContext.Consumer>

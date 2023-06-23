@@ -1,6 +1,4 @@
-﻿
-
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Json;
 
@@ -24,18 +22,16 @@ namespace BeneNotenrechner.Backend {
             NetTokenEmail _netTokenEmail = new NetTokenEmail(_mail, _token);
 
             try {
-                using (var wb = new HttpClient()) {
-                    StringContent data = new StringContent(JsonSerializer.Serialize(_netTokenEmail), Encoding.UTF8, "application/json");
+                StringContent _data = new StringContent(JsonSerializer.Serialize(_netTokenEmail), Encoding.UTF8, "application/json");
 
-                    string url = API_TokenMailUrl;
+                string url = API_TokenMailUrl;
 
-                    using (var client = new HttpClient()) {
-                        HttpResponseMessage response = await client.PostAsync(url, data);
+                using (var _client = new HttpClient()) {
+                    HttpResponseMessage response = await _client.PostAsync(url, _data);
 
-                        string result = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine(result);
-                    }
-                }
+                    string result = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(result);
+                } 
             }
             catch (Exception _e) {
                 Console.WriteLine("Sending E-Mail with api call failed: " + _e);

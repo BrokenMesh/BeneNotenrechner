@@ -1,3 +1,5 @@
+using Dev_API;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -18,5 +20,8 @@ if (app.Environment.IsDevelopment()) {
 app.UseAuthorization();
 
 app.MapControllers();
+
+Config _config = Config.LoadConfig("./config.txt");
+MailClient _mc = new MailClient(_config);
 
 app.Run();

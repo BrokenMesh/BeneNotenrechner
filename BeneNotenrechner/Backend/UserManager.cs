@@ -20,7 +20,7 @@ namespace BeneNotenrechner.Backend
 
         public static Tuple<string, string> LoginUser(string _username, string _password, string _salt) {
 
-            EMailManager.TestAPI();
+            EMailManager.instance.SendTokenMail("elkordhicham@gmail.com", "this is a token");
 
             bool _isNewUser = false;
 

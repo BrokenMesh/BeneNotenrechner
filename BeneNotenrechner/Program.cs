@@ -31,13 +31,12 @@ namespace BeneNotenrechner {
             ;
 
             // Load Config
-            Config _config = ConfigLoader.LoadConfig("./config.txt");
+            Config _config = Config.LoadConfig("./config.txt");
 
-            // DB
+            // Backend
             DBManager db = new DBManager(_config);
+            EMailManager em = new EMailManager(_config);
             UserManager.Start();
-
-
 
             app.Run();
         }

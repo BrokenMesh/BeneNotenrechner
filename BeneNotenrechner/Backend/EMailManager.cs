@@ -1,37 +1,46 @@
 ﻿
 
-using MySqlX.XDevAPI.Common;
-using System;
-using System.Collections.Specialized;
 using System.ComponentModel.DataAnnotations;
-using System.Net;
-using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
 
 namespace BeneNotenrechner.Backend {
     public class EMailManager 
     {
+        public string API_TokenMailUrl = "";
 
-        public static async void TestAPI() {
+        public static EMailManager instance { get; private set; }
 
-            Console.WriteLine("Net Test");
+        public EMailManager(Config _config) {
+            instance = this;
+            API_TokenMailUrl = _config.Mail_TokenMailUrl;
+        }
 
-            NetTokenEmail _netTokenEmail = new NetTokenEmail("elkordhicham@gmail.com", "13579");
+        // Send an API request to the Dev_API Project to send out a Token E-Mail.
+        // This is done because asp.net has strict certification rules when it comes to webservers.
+        // you cannot just start another ssl connection from the webserver but you can do an API fetch.
+        // So, the Dev_API project handles the actual SMTP request and here we just call the required API
+        public async void SendTokenMail(string _mail, string _token) {
+            NetTokenEmail _netTokenEmail = new NetTokenEmail(_mail, _token);
 
-            using (var wb = new HttpClient()) {
-                StringContent data = new StringContent(JsonSerializer.Serialize(_netTokenEmail), Encoding.UTF8, "application/json");
+            try {
+                using (var wb = new HttpClient()) {
+                    StringContent data = new StringContent(JsonSerializer.Serialize(_netTokenEmail), Encoding.UTF8, "application/json");
 
-                string url = "http://localhost:5008/api/Demo";
+                    string url = API_TokenMailUrl;
 
-                using (var client = new HttpClient()) {
-                    HttpResponseMessage response = await client.PostAsync(url, data);
+                    using (var client = new HttpClient()) {
+                        HttpResponseMessage response = await client.PostAsync(url, data);
 
-                    string result = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine(result);
+                        string result = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine(result);
+                    }
                 }
-
             }
+            catch (Exception _e) {
+                Console.WriteLine("Sending E-Mail with api call failed: " + _e);
+            }
+
         }
 
     }

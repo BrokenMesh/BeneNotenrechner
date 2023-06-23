@@ -1,0 +1,6 @@
+{
+	"Mail_Host": "smtp.gmail.com", 
+	"Mail_UserMail": "elkordhicham55demo@gmail.com",
+	"Mail_Password": "evhqqxffufyogqqp",
+	"Mail_TokenMailHtmlPath": "./TokenEMail.html"
+}

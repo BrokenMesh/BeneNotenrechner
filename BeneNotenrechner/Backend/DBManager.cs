@@ -34,13 +34,14 @@ namespace BeneNotenrechner.Backend
 
         #region USER
 
-        public int CreateUser(string _username, string _password) {
+        public int CreateUser(string _username, string _password, string _usermail) {
             OpenStream();
 
-            string _sql = "INSERT INTO tbl_users(username, tbl_users.password) VALUES (@username,  @password)";
+            string _sql = "INSERT INTO tbl_users(username, tbl_users.password, tbl_users.usermail) VALUES (@username, @password, @usermail)";
             using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
                 _command.Parameters.AddWithValue("@username", _username);
                 _command.Parameters.AddWithValue("@password", _password);
+                _command.Parameters.AddWithValue("@usermail", _usermail);
 
                 _command.ExecuteNonQuery();
             }
@@ -70,15 +71,38 @@ namespace BeneNotenrechner.Backend
             return _userPassword == _submitePassword;
         }
 
+        public string? GetUsername(int _userId) {
+            OpenStream();
+
+            string _sql = "SELECT tbl_users.username FROM tbl_users WHERE user_id = @userid";
+
+            string? _userPassword = null;
+
+            using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
+                _command.Parameters.AddWithValue("@userid", _userId);
+
+                using (MySqlDataReader _reader = _command.ExecuteReader()) {
+                    while (_reader.Read()) {
+                        _userPassword = _reader.GetString("username");
+                    }
+                }
+            }
+
+            CloseStream();
+
+            return _userPassword;
+        }
+
         public int GetUser(string _username) {
             OpenStream();
 
-            string _sql = "SELECT user_id FROM tbl_users WHERE username = @username";
+            string _sql = "SELECT user_id FROM tbl_users WHERE username = @username OR usermail = @usermail";
 
             int _user_id = -1;
 
             using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
                 _command.Parameters.AddWithValue("@username", _username);
+                _command.Parameters.AddWithValue("@usermail", _username);
 
                 using (MySqlDataReader _reader = _command.ExecuteReader()) {
                     while (_reader.Read()) {

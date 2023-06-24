@@ -10,13 +10,15 @@ namespace BeneNotenrechner.Backend
         [Required] public string DB_Password { get; }
         [Required] public string DB_Database { get; }
         [Required] public string Mail_TokenMailUrl { get; }
+        [Required] public string Mail_ReqiredHost { get; }
 
-        public Config(string dB_Server, string dB_User, string dB_Password, string dB_Database, string mail_TokenMailUrl) {
+        public Config(string dB_Server, string dB_User, string dB_Password, string dB_Database, string mail_TokenMailUrl, string mail_ReqiredHost) {
             DB_Server = dB_Server;
             DB_User = dB_User;
             DB_Password = dB_Password;
             DB_Database = dB_Database;
             Mail_TokenMailUrl = mail_TokenMailUrl;
+            Mail_ReqiredHost = mail_ReqiredHost;
         }
 
         public static Config LoadConfig(string _path) {
@@ -35,7 +37,7 @@ namespace BeneNotenrechner.Backend
                 Console.WriteLine("Using standart configuration");
             }
 
-            return new Config("localhost", "root", "", "benenotenrechner_db", "http://localhost:5008/api/TokenMail");
+            return new Config("localhost", "root", "", "benenotenrechner_db", "http://localhost:5008/api/TokenMail", "");
         }
     }
 }

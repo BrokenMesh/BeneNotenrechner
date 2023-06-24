@@ -12,6 +12,7 @@ namespace FeatureTest {
         private static SmtpClient smtpClient;
 
         public static void Run() {
+
             smtpClient = new SmtpClient("smtp.gmail.com") {
                 Port = 587,
                 Credentials = new NetworkCredential("elkordhicham55demo@gmail.com", "evhqqxffufyogqqp"),

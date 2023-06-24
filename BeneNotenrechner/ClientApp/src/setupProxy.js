@@ -8,6 +8,7 @@ const context =  [
     "/logincall",
     "/reauthenticate",
     "/registercall",
+    "/validationcode",
 
     "/nt/nt_supersubject",
     "/nt/nt_createsupersubject", 

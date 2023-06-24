@@ -36,11 +36,14 @@
         public string Username { get; private set; }
         public string Password { get; private set; }
         public string Usermail { get; private set; }
+        public DateTime TimeOfCreation { get; private set; }
 
         public TempUser(string username, string password, string usermail) {
             Username = username;
             Password = password;
             Usermail = usermail;
+
+            TimeOfCreation = DateTime.Now;
         }
     }
 }

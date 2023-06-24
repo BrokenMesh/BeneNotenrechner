@@ -13,6 +13,9 @@ namespace BeneNotenrechner.Backend
 
         private const int OutdatedUsersCheckPeriod_mil = 1000 * 60 * 5;
         private const float MaxOutdatedTime_min = 7f;
+        private const float MaxOutdateValidationCodeTime_min = 1f;
+
+        private static string ReqiredEmailHost = "";
 
         public static void Start() { 
             timer = new Timer((object? state) => { 
@@ -20,11 +23,8 @@ namespace BeneNotenrechner.Backend
             }, null, 0, OutdatedUsersCheckPeriod_mil);
         }
 
-        public static Tuple<string, string> LoginUser(string _username, string _password, string _salt) {
-
-            EMailManager.instance.SendTokenMail("elkordhicham@gmail.com", "this is a token");
-
-            int _userid = DBManager.instance.GetUser(_username);
+        public static Tuple<string, string> LoginUser(string _usernameOrMail, string _password, string _salt) {
+            int _userid = DBManager.instance.GetUser(_usernameOrMail);
 
             if (_userid == -1) return new Tuple<string, string>("", "Nutzer konnte nicht gefunden werden!");
 
@@ -45,6 +45,9 @@ namespace BeneNotenrechner.Backend
                 _token = EncriptionManager.GenRandomString(64);
             }
 
+            string? _username = DBManager.instance.GetUsername(_userid);
+            if (_username == null) _username = _usernameOrMail;
+
             userlist.Add(_token, new User(_userid, _username, _password, _salt));
 
             Console.Write("> ");
@@ -59,26 +62,71 @@ namespace BeneNotenrechner.Backend
         public static string CreateTempUser(string _username, string _password, string _usermail) {
             if (DBManager.instance.GetUser(_username) != -1) return "Username wird schon verwendet!";
             if (_username.Length > 45) return "Error: username is to long";
+            if (_usermail.Length > 100) return "Error: email is to long";
             if (!ValidateMail(_usermail)) return "E-Mail Adresse ist nicht valid!";
+            if (ValidateMail(_username)) return "Username darf keine E-Mail Adresse sein!";
 
+            if (!string.IsNullOrEmpty(ReqiredEmailHost)) {
+                if (!ValidateMailHost(_usermail, ReqiredEmailHost))
+                    return $"E-Mail muss eine '@{ReqiredEmailHost}' sein";
+            }
+
+            // Generate Validation
             string _validationToken = EncriptionManager.GenRandomString(8).ToUpper();
 
+            while(userlist.ContainsKey(_validationToken)) {
+                _validationToken = EncriptionManager.GenRandomString(8).ToUpper();
+            }
+
+            // Remove all outdated and dublicate users
+            List<string> _toRemove = new List<string>();
+
+            foreach ((string _key, TempUser _user) in tempUserlist) {
+                if (_user.Usermail == _usermail) _toRemove.Add(_key);
+                if (_user.TimeOfCreation.AddMinutes(MaxOutdateValidationCodeTime_min) < DateTime.Now)
+                    _toRemove.Add(_key);
+            }
+
+            foreach (string _key in _toRemove) {
+                tempUserlist.Remove(_key);
+            }
+
+            // Add User
             tempUserlist.Add(_validationToken, new TempUser(_username, _password, _usermail));
+
+            EMailManager.instance.SendTokenMail(_usermail, _validationToken);
+
+            return "";
+        }
+
+        public static string ValidateAndCreateUser(string _validationToken) {
+            _validationToken = _validationToken.ToUpper();
+
+            if (!tempUserlist.ContainsKey(_validationToken)) return "Code ist falsch oder abgelaufen!";
+
+            TempUser _tempuser = tempUserlist[_validationToken];
+
+            DBManager.instance.CreateUser(_tempuser.Username, _tempuser.Password, _tempuser.Usermail);
 
             return "";
         }
 
         private static bool ValidateMail(string _mail) {
-            var valid = true;
-
             try {
                 var emailAddress = new MailAddress(_mail);
+                return true;
+            } catch {
+                return false;
             }
-            catch {
-                valid = false;
-            }
+        }
 
-            return valid;
+        private static bool ValidateMailHost(string _mail, string _reqiredHost) {
+            try {
+                var emailAddress = new MailAddress(_mail);
+                return emailAddress.Host == _reqiredHost;
+            } catch {
+                return false;
+            }
         }
 
         private static void CheckForOutdatedUsers() {
@@ -112,6 +160,10 @@ namespace BeneNotenrechner.Backend
             }
 
             return null;
+        }
+
+        public static void SetReqiredEmailHost(string _reqiredHost) {
+            ReqiredEmailHost = _reqiredHost;
         }
     }
 }

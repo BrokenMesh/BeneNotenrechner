@@ -37,6 +37,7 @@ namespace BeneNotenrechner {
             DBManager db = new DBManager(_config);
             EMailManager em = new EMailManager(_config);
             UserManager.Start();
+            UserManager.SetReqiredEmailHost(_config.Mail_ReqiredHost);
 
             app.Run();
         }

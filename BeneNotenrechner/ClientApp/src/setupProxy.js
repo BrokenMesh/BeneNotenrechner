@@ -10,6 +10,9 @@ const context =  [
     "/registercall",
     "/validationcode",
 
+    "/nt/nt_profile",
+    "/nt/nt_profileset",
+
     "/nt/nt_supersubject",
     "/nt/nt_createsupersubject", 
     "/nt/nt_deletesupersubject", 

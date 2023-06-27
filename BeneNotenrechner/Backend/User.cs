@@ -8,6 +8,8 @@
         public string Salt { get; private set; }
         public DateTime LastAuthentication { get; private set; }
 
+        public int currentProfileIndex = 1;
+
         private Profile? profile;
 
         public User(int id, string username, string password, string salt) {
@@ -29,6 +31,11 @@
             }
 
             return profile;
+        }
+
+        public void SetProfile(int _index) {
+            profile = null;
+            currentProfileIndex = _index;
         }
     }
 

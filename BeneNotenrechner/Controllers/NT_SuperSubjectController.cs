@@ -37,11 +37,9 @@ namespace BeneNotenrechner.Controllers
 
     public class NetSuperSubjectRequest {
         [Required] public string Token { get; }
-        [Required] public string Profile { get; }
 
-        public NetSuperSubjectRequest(string token, string profile) {
+        public NetSuperSubjectRequest(string token) {
             Token = token;
-            Profile = profile;
         }
     }
 

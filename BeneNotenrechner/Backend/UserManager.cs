@@ -101,14 +101,29 @@ namespace BeneNotenrechner.Backend
 
         public static string ValidateAndCreateUser(string _validationToken) {
             _validationToken = _validationToken.ToUpper();
-
             if (!tempUserlist.ContainsKey(_validationToken)) return "Code ist falsch oder abgelaufen!";
 
             TempUser _tempuser = tempUserlist[_validationToken];
 
-            DBManager.instance.CreateUser(_tempuser.Username, _tempuser.Password, _tempuser.Usermail);
+            int _userid = DBManager.instance.CreateUser(_tempuser.Username, _tempuser.Password, _tempuser.Usermail);
+
+            CreateSampleData(_userid);
 
             return "";
+        }
+
+        private static void CreateSampleData(int _userid) {
+            User _user = new User(_userid, "", "", "");
+
+            for (int i = 1; i <= 8; i++) {
+                DBManager.instance.CreateProfile(_user, i);
+            }
+
+            Profile? _profile = DBManager.instance.GetProfile(_user, false);
+            if (_profile == null) return;
+
+            DBManager.instance.CreateSuperSubject(_profile, "Informatik Fächer");
+            DBManager.instance.CreateSuperSubject(_profile, "Allgemeine Fächer");
         }
 
         private static bool ValidateMail(string _mail) {

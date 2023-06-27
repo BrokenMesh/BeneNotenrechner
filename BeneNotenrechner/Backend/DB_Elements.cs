@@ -5,6 +5,7 @@ namespace BeneNotenrechner.Backend
     public class Profile
     {
         public int id_profile;
+        public int index;
         public int id_user;
 
         public List<SuperSubject> superSubjects;
@@ -12,6 +13,13 @@ namespace BeneNotenrechner.Backend
         public Profile(int id_profile, int id_user)
         {
             this.id_profile = id_profile;
+            this.id_user = id_user;
+            superSubjects = new List<SuperSubject>();
+        }
+
+        public Profile(int id_profile, int index, int id_user) {
+            this.id_profile = id_profile;
+            this.index = index;
             this.id_user = id_user;
             superSubjects = new List<SuperSubject>();
         }

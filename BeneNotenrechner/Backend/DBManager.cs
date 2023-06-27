@@ -123,9 +123,10 @@ namespace BeneNotenrechner.Backend
 
             int _id_profile = -1;
 
-            string _sql = "SELECT profile_id FROM tbl_profile WHERE id_users = @id_user";
+            string _sql = "SELECT profile_id FROM tbl_profile WHERE id_users = @id_user AND tbl_profile.index = @index";
             using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
                 _command.Parameters.AddWithValue("@id_user", _user.Id);
+                _command.Parameters.AddWithValue("@index", _user.currentProfileIndex);
 
                 using (MySqlDataReader _reader = _command.ExecuteReader()) {
                     while (_reader.Read()) {
@@ -142,6 +143,31 @@ namespace BeneNotenrechner.Backend
             }
 
             return _profile;
+        }
+
+        public List<Profile> GetProfileAll(User _user) {
+            OpenStream();
+
+            List<Profile> _profiles = new List<Profile>();
+
+            string _sql = "SELECT * FROM tbl_profile WHERE id_users = @id_user";
+            using (MySqlCommand _command = new MySqlCommand(_sql, db)) {
+                _command.Parameters.AddWithValue("@id_user", _user.Id);
+
+                using (MySqlDataReader _reader = _command.ExecuteReader()) {
+                    while (_reader.Read()) {
+                        _profiles.Add(new Profile(
+                                _reader.GetInt32("profile_id"),
+                                _reader.GetInt32("index"),
+                                _user.Id
+                            ));
+                    }
+                }
+            }
+
+            CloseStream();
+
+            return _profiles;
         }
 
         public List<SuperSubject> GetSuperSubjectAll(Profile _profile, User _user, bool _resolveChildren) {

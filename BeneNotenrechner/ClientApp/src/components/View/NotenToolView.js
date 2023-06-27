@@ -10,7 +10,10 @@ export class NotenToolView extends Component {
         super(props);
         this.state = {
             SuperSubjects: [],
-            Loading: true,
+            ProfilesLoading: true,
+            Profiles: [],
+            CurrentProfileIndex: 0,
+            SuperSubjectLoading: true,
             NewSuperSubject: {
                 name: ""
             }
@@ -20,11 +23,10 @@ export class NotenToolView extends Component {
     }
 
     populateData(context) {
-        const fetchdata = async () => {
+        const fetchSuperSubject = async () => {
 
             const data = {
                 token: context.state.token,
-                profile: "0"
             }
 
             const result = await fetch('nt/nt_supersubject', {
@@ -38,18 +40,43 @@ export class NotenToolView extends Component {
             const superSubjectData = await result.json();
 
             if (superSubjectData.Error == null) {
-                this.setState({ SuperSubjects: superSubjectData, Loading: false });
+                this.setState({ SuperSubjects: superSubjectData, SuperSubjectsLoading: false });
             } else {
+                this.setState({ SuperSubjectsLoading: true });
                 console.log(superSubjectData.Error);
             }
         }
 
-        fetchdata();
+        const fetchProfil = async () => {
+
+            const data = {
+                token: context.state.token,
+            }
+
+            const result = await fetch('nt/nt_profile', {
+                method: 'Post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+
+            const profileData = await result.json();
+
+            if (profileData.Error == null) {
+                this.setState({ Profiles: profileData, ProfilesLoading: false });
+            } else {
+                this.setState({ ProfilesLoading: true });
+                console.log(profileData.Error);
+            }
+        } 
+
+        fetchSuperSubject();
+        fetchProfil();
     }
 
     createSuperSubject(context, NewSuperSubject) {
         const asCreateSuperSubject = async () => {
-
             const data = {
                 Token: context.state.token,
                 Name: NewSuperSubject.name
@@ -83,6 +110,31 @@ export class NotenToolView extends Component {
         });   
     }
 
+    setProfile(profile, index, context) {
+        const asSetProfile = async () => {
+            const data = {
+                Token: context.state.token,
+                Index: profile.Index + "",
+            }
+
+            const result = await fetch('nt/nt_profileset', {
+                method: 'Post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+
+            this.setState({
+                CurrentProfileIndex: index
+            });
+
+            this.reload(context);
+        }
+
+        asSetProfile();
+    }
+
     reload(contex) {
         this.populateData(contex);
     }
@@ -101,6 +153,30 @@ export class NotenToolView extends Component {
         );
     }
 
+    renderProfiles(profiles, currentProfile , dropdownStyle, context) {
+
+        let _current = '_';
+
+        if (profiles.length > currentProfile) {
+            _current = profiles[currentProfile].Index;
+        }
+
+        return (
+            <div style={dropdownStyle} className="dropdown">
+                <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> {_current} </button>
+                <ul className="dropdown-menu">
+                    {
+                        profiles.map((_profile, _index) => {
+                            return (
+                                <li key={_profile.Index}><div onClick={(evt) => { this.setProfile(_profile, _index, context); }} className="dropdown-item">{_profile.Index}</div></li>
+                            )
+                        })
+                    }
+                </ul>
+            </div> 
+        )
+    }
+
     render() {
 
         const menuStyle = {
@@ -109,51 +185,67 @@ export class NotenToolView extends Component {
             marginBottom: "100px",
         };
 
-        let contents = this.state.Loading
-            ? <p><em>Loading...</em></p>
-            : this.renderSuperSubjects(this.state.SuperSubjects);
+        const dropdownStyle = {
+            position: 'relative',
+            left: -70,
+            top: -10
+        };
 
         return (
             <div>
+                <NavMenu />
                 <MContext.Consumer>
                     {(context) => {
-                        if(this.state.Loading == true)
+                        if (this.state.SuperSubjectsLoading === true || this.state.ProfilesLoading === true)
                             this.populateData(context);
+
+                        let superSubjects = this.state.SuperSubjectsLoading
+                            ? <p><em>Loading...</em></p>
+                            : this.renderSuperSubjects(this.state.SuperSubjects);
+
+                        let profiles = this.state.ProfilesLoading
+                            ? <p><em>Loading...</em></p>
+                            : this.renderProfiles(this.state.Profiles, this.state.CurrentProfileIndex, dropdownStyle, context);
+
                         return (
-                            <div className="modal fade" id={"notentoolcreate"} tabIndex="-1" aria-labelledby="createmodalLabel" aria-hidden="true">
-                                <div className="modal-dialog modal-dialog-centered ">
-                                    <div className="modal-content">
-                                        <div className="modal-header">
-                                            <h1 className="modal-title fs-5" id="createmodalLabel"> Neues Überfach Hinzufügen </h1>
-                                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <div>
+                                <div className="modal fade" id={"notentoolcreate"} tabIndex="-1" aria-labelledby="createmodalLabel" aria-hidden="true">
+                                    <div className="modal-dialog modal-dialog-centered ">
+                                        <div className="modal-content">
+                                            <div className="modal-header">
+                                                <h1 className="modal-title fs-5" id="createmodalLabel"> Neues Überfach Hinzufügen </h1>
+                                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div className="modal-body">
+                                                <form>
+                                                    <div className="mb-2">
+                                                        <label htmlFor="subject-name" className="col-form-label">Name:</label>
+                                                        <input type="text" className="form-control" id="subject-name"
+                                                            onChange={(evt) => { this.updateNewSuperSubjectName(evt) }} value={this.state.NewSuperSubject.name} required />
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div className="modal-footer">
+                                                <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => this.createSuperSubject(context, this.state.NewSuperSubject)}>Hinzufügen</button>
+                                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => this.resetNewSuperSubject()}>Abbrechen</button>
+                                            </div>
                                         </div>
-                                        <div className="modal-body">
-                                            <form>
-                                                <div className="mb-2">
-                                                    <label htmlFor="subject-name" className="col-form-label">Name:</label>
-                                                    <input type="text" className="form-control" id="subject-name"
-                                                        onChange={(evt) => { this.updateNewSuperSubjectName(evt) }} value={this.state.NewSuperSubject.name} required />
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div className="modal-footer">
-                                            <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => this.createSuperSubject(context, this.state.NewSuperSubject)}>Hinzufügen</button>
-                                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => this.resetNewSuperSubject()}>Abbrechen</button>
-                                        </div>
+                                    </div>
+                                </div>
+                                <div style={menuStyle} className="container-sm ">
+
+                                    {profiles}
+
+                                    {superSubjects}
+
+                                    <div className="text-center p-3">
+                                        <button type="button" className=" btn btn-outline-primary" data-bs-toggle="modal" data-bs-target={"#notentoolcreate"}>Hinzufügen</button>
                                     </div>
                                 </div>
                             </div>
                         )
                     }}
                 </MContext.Consumer>
-                <NavMenu />
-
-                <div style={menuStyle} className="container-sm ">
-                    {contents}
-                    <div className="text-center p-3">
-                        <button type="button" className=" btn btn-outline-primary" data-bs-toggle="modal" data-bs-target={"#notentoolcreate"}>Hinzufügen</button>
-                    </div>
-                </div>
             </div>
         );
     }

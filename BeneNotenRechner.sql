@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `benenotenrechner_db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `benenotenrechner_db`;
--- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
 -- Host: localhost    Database: benenotenrechner_db
 -- ------------------------------------------------------
--- Server version	8.0.31
+-- Server version	8.0.32
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -34,7 +34,7 @@ CREATE TABLE `tbl_grade` (
   PRIMARY KEY (`grade_id`),
   KEY `fk_grade_idx` (`id_subject`),
   CONSTRAINT `fk_grade` FOREIGN KEY (`id_subject`) REFERENCES `tbl_subject` (`subject_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=188 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=190 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `tbl_grade` (
 
 LOCK TABLES `tbl_grade` WRITE;
 /*!40000 ALTER TABLE `tbl_grade` DISABLE KEYS */;
-INSERT INTO `tbl_grade` VALUES (173,'QÛ´u®8woB¤ÝÝ¸hX','2023-06-20 00:00:00','1ZP',1,24),(174,'1JÈÉôåZfµxÓºsuº','2023-06-21 00:00:00','2ZP',1,24),(175,')B|5â[Î×vpût9','2023-06-21 00:00:00','3ZP',1,24),(176,'rGcÚª2BP\ZVu','2023-06-21 00:00:00','1ZP',1,25),(177,'QÛ´u®8woB¤ÝÝ¸hX','2023-06-21 00:00:00','2ZP',1,25),(178,'kÚým(×ôÚpqh^','2023-06-21 00:00:00','3ZP',1,25),(179,'ÅrÕü8Rñ VÚ\r_','2023-06-21 00:00:00','1ZP',1,26),(180,'z¾^+¼î\nMyÆ´Ù&','2023-06-21 00:00:00','2ZP',1,26),(181,'`LfÆ¦Ç~ÍßQç','2023-06-21 00:00:00','3ZP',1,26),(182,'QÛ´u®8woB¤ÝÝ¸hX','2023-06-21 00:00:00','1ZP',1,27),(183,'QÛ´u®8woB¤ÝÝ¸hX','2023-06-21 00:00:00','2ZP',1,27),(184,'\nD3è¹¤ïQÑt\Z ¦g','2023-06-21 00:00:00','1ZP',1,30),(185,')B|5â[Î×vpût9','2023-06-21 00:00:00','1ZP',1,28),(186,'\nD3è¹¤ïQÑt\Z ¦g','2023-06-21 00:00:00','2ZP',1,28),(187,'1JÈÉôåZfµxÓºsuº','2023-06-21 00:00:00','1ZP',1,29);
+INSERT INTO `tbl_grade` VALUES (173,'QÛ´u®8woB¤ÝÝ¸hX','2023-06-20 00:00:00','1ZP',1,24),(174,'1JÈÉôåZfµxÓºsuº','2023-06-21 00:00:00','2ZP',1,24),(175,')B|5â[Î×vpût9','2023-06-21 00:00:00','3ZP',1,24),(176,'rGcÚª2BP\ZVu','2023-06-21 00:00:00','1ZP',1,25),(177,'QÛ´u®8woB¤ÝÝ¸hX','2023-06-21 00:00:00','2ZP',1,25),(178,'kÚým(×ôÚpqh^','2023-06-21 00:00:00','3ZP',1,25),(179,'ÅrÕü8Rñ VÚ\r_','2023-06-21 00:00:00','1ZP',1,26),(180,'z¾^+¼î\nMyÆ´Ù&','2023-06-21 00:00:00','2ZP',1,26),(181,'`LfÆ¦Ç~ÍßQç','2023-06-21 00:00:00','3ZP',1,26),(182,'QÛ´u®8woB¤ÝÝ¸hX','2023-06-21 00:00:00','1ZP',1,27),(183,'QÛ´u®8woB¤ÝÝ¸hX','2023-06-21 00:00:00','2ZP',1,27),(184,'\nD3è¹¤ïQÑt\Z ¦g','2023-06-21 00:00:00','1ZP',1,30),(185,')B|5â[Î×vpût9','2023-06-21 00:00:00','1ZP',1,28),(186,'\nD3è¹¤ïQÑt\Z ¦g','2023-06-21 00:00:00','2ZP',1,28),(187,'1JÈÉôåZfµxÓºsuº','2023-06-21 00:00:00','1ZP',1,29),(188,'QÛ´u®8woB¤ÝÝ¸hX','2023-06-23 00:00:00','2ZP',1,29);
 /*!40000 ALTER TABLE `tbl_grade` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -61,7 +61,7 @@ CREATE TABLE `tbl_profile` (
   PRIMARY KEY (`profile_id`),
   KEY `id_user_idx` (`id_users`),
   CONSTRAINT `id_user` FOREIGN KEY (`id_users`) REFERENCES `tbl_users` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +70,7 @@ CREATE TABLE `tbl_profile` (
 
 LOCK TABLES `tbl_profile` WRITE;
 /*!40000 ALTER TABLE `tbl_profile` DISABLE KEYS */;
-INSERT INTO `tbl_profile` VALUES (5,1,9);
+INSERT INTO `tbl_profile` VALUES (5,1,9),(6,2,9),(7,1,13),(8,2,13),(9,3,13),(10,4,13),(11,5,13),(12,6,13),(13,7,13),(14,8,13),(15,1,14),(16,2,14),(17,3,14),(18,4,14),(19,5,14),(20,6,14),(21,7,14),(22,8,14);
 /*!40000 ALTER TABLE `tbl_profile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -115,7 +115,7 @@ CREATE TABLE `tbl_supersubject` (
   PRIMARY KEY (`supersubject_id`),
   KEY `fk_profile_idx` (`id_profile`),
   CONSTRAINT `fk_profile` FOREIGN KEY (`id_profile`) REFERENCES `tbl_profile` (`profile_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -124,7 +124,7 @@ CREATE TABLE `tbl_supersubject` (
 
 LOCK TABLES `tbl_supersubject` WRITE;
 /*!40000 ALTER TABLE `tbl_supersubject` DISABLE KEYS */;
-INSERT INTO `tbl_supersubject` VALUES (10,'Informatik Fächer',5),(11,'Allgemeine Fächer',5),(12,'ABU',5);
+INSERT INTO `tbl_supersubject` VALUES (10,'Informatik Fächer',5),(11,'Allgemeine Fächer',5),(12,'ABU',5),(14,'Informatik Fächer',7),(15,'Allgemeine Fächer',7),(16,'Informatik Fächer',15),(17,'Allgemeine Fächer',15);
 /*!40000 ALTER TABLE `tbl_supersubject` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -139,8 +139,9 @@ CREATE TABLE `tbl_users` (
   `user_id` int NOT NULL AUTO_INCREMENT,
   `username` varchar(45) NOT NULL,
   `password` varchar(256) NOT NULL,
+  `usermail` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -149,7 +150,7 @@ CREATE TABLE `tbl_users` (
 
 LOCK TABLES `tbl_users` WRITE;
 /*!40000 ALTER TABLE `tbl_users` DISABLE KEYS */;
-INSERT INTO `tbl_users` VALUES (9,'BrokenMesh','7214f780d3d36bab4b03bdf3ed67b0df7b7b707a506566f765772a242ffefe31');
+INSERT INTO `tbl_users` VALUES (9,'BrokenMesh','7214f780d3d36bab4b03bdf3ed67b0df7b7b707a506566f765772a242ffefe31',NULL),(10,'Hicham','7214f780d3d36bab4b03bdf3ed67b0df7b7b707a506566f765772a242ffefe31','elkordhicham@gmail.com'),(13,'HichamDemo','7214f780d3d36bab4b03bdf3ed67b0df7b7b707a506566f765772a242ffefe31','ElKord.Hicham@bene-edu.ch'),(14,'HichamDemo2','7214f780d3d36bab4b03bdf3ed67b0df7b7b707a506566f765772a242ffefe31','ElKord.Hicham@bene-edu.ch');
 /*!40000 ALTER TABLE `tbl_users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -162,4 +163,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-21  8:04:22
+-- Dump completed on 2023-09-05 22:20:27

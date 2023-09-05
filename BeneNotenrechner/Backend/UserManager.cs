@@ -12,6 +12,7 @@ namespace BeneNotenrechner.Backend
         private static Timer timer;
 
         private const int OutdatedUsersCheckPeriod_mil = 1000 * 60 * 5;
+
         private const float MaxOutdatedTime_min = 7f;
         private const float MaxOutdateValidationCodeTime_min = 1f;
 

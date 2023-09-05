@@ -187,7 +187,7 @@ namespace BeneNotenrechner.Backend
                             _reader.GetInt32("supersubject_id"),
                             _reader.GetInt32("id_profile"),
                             _reader.GetString("name")
-                            ));
+                        ));
                     }
                 }
             }

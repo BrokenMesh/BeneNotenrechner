@@ -60,7 +60,9 @@ Distributed under the GNU GENERAL PUBLIC LICENSE License. See `LICENSE.txt` for 
 
 Hicham El-Kord - elkordhicham@gmail.com
 
-Project Link: [https://github.com/BrokenMesh/BeneNotenrechner](https://github.com/github_username/repo_name)
+Project Link: [https://github.com/BrokenMesh/BeneNotenrechner](https://github.com/BrokenMesh/BeneNotenrechner)
+
+Link to Deployment: [Deployment](https://benenotenrechner.azurewebsites.net/)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

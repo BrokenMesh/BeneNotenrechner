@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureTest", "FeatureTest\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeneNotenrechner.nUnitTests", "BeneNotenrechner.nUnitTests\BeneNotenrechner.nUnitTests.csproj", "{6561C9B8-C725-467D-8143-E3B5810563BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev_API", "Dev_API\Dev_API.csproj", "{F3FFF763-E35D-4620-9778-B6CA50C652DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeneNotenrechner_MailAPI", "Dev_API\BeneNotenrechner_MailAPI.csproj", "{F3FFF763-E35D-4620-9778-B6CA50C652DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

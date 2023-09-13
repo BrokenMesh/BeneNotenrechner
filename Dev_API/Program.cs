@@ -1,4 +1,4 @@
-using Dev_API;
+using BeneNotenrechner_MailAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 

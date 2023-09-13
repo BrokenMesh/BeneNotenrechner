@@ -2,7 +2,7 @@
 using System.Net.Mail;
 using System.Net;
 
-namespace Dev_API
+namespace BeneNotenrechner_MailAPI
 {
     public class MailClient
     {

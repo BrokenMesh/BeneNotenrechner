@@ -6,14 +6,21 @@ using System.Net.Http;
 using System.Net;
 using System.ComponentModel.DataAnnotations;
 
-namespace Dev_API.Controllers {
+namespace BeneNotenrechner_MailAPI.Controllers {
     [Route("api/[controller]")]
     [ApiController]
     public class TokenMailController : ControllerBase {
 
+        static string demo = "";
+
+        [HttpGet]
+        public IActionResult Get() {
+            return Ok(demo);
+        }
+
         [HttpPost]
         public IActionResult Get(NetTokenEmail _request) {
-
+            demo += _request.EMail;
             bool _result = MailClient.instance.SendTokenMail(_request.EMail, _request.Token);
 
             return _result ? Ok() : BadRequest();

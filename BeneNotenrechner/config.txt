@@ -3,6 +3,6 @@
 	"DB_User": "Hicham",
 	"DB_Password": "Hallosaid1",
 	"DB_Database": "benenotenrechner_db",
-	"Mail_TokenMailUrl": "http://localhost:5008/api/TokenMail",
-	"Mail_ReqiredHost": "bene-edu.ch"
+	"Mail_TokenMailUrl": "https://benenotenrechnermailapi.azurewebsites.net/api/TokenMail",
+	"Mail_ReqiredHost": ""
 }

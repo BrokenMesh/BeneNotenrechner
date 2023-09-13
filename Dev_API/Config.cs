@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 
-namespace Dev_API
+namespace BeneNotenrechner_MailAPI
 {
     public class Config {
         [Required] public string Mail_Host { get; }
